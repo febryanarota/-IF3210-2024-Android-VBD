@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        replaceFragment(TransactionFragment())
+
         binding.navbar.setOnItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
                 R.id.settings_nav -> {
