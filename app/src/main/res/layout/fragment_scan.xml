@@ -40,7 +40,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
         android:text="@string/scan_title"
-        android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/previewView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +56,6 @@
         app:layout_constraintEnd_toStartOf="@+id/captureButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previewView"
-        android:contentDescription="@string/gallery_picker"
-        app:tint="@color/black" />
+        android:contentDescription="@string/gallery_picker" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

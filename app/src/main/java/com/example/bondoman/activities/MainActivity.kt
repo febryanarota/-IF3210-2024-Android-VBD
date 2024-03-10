@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.bondoman.R
+import com.example.bondoman.fragments.ScanFragment
 import com.example.bondoman.fragments.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -21,6 +22,10 @@ class MainActivity : AppCompatActivity() {
             when(menuItem.itemId) {
                 R.id.transaction_nav -> {
                     replaceFragment(SettingsFragment())
+                    true
+                }
+                R.id.scan_nav -> {
+                    replaceFragment(ScanFragment())
                     true
                 }
                 else -> {
