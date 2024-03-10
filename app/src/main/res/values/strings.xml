@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BondoMan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scan_title">Scan</string>
+    <string name="capture_image">Capture image</string>
+    <string name="gallery_picker">get from gallery</string>
 </resources>
