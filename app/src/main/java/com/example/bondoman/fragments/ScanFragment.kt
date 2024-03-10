@@ -74,7 +74,8 @@ class ScanFragment : Fragment() {
                 binding.previewView.visibility = View.INVISIBLE
                 binding.imageView.setImageURI(uri)
                 binding.imageView.visibility = View.VISIBLE
-                // TODO 
+                // TODO send uri to backend and create transaction
+                enableLoadingAnimation()
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -92,6 +93,18 @@ class ScanFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun enableLoadingAnimation() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.loadingPanel.visibility = View.VISIBLE
+        }
+    }
+
+    private fun disableLoadingAnimation() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.loadingPanel.visibility = View.GONE
+        }
     }
 
     private fun playShutterSound() {
@@ -119,6 +132,7 @@ class ScanFragment : Fragment() {
                         binding.captureButton.isEnabled = false
                     }
                     // TODO call backend and add transaction
+                    enableLoadingAnimation()
                 }
             }
         )
