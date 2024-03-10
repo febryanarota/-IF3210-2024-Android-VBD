@@ -2,25 +2,31 @@ package com.example.bondoman.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.SurfaceControl.Transaction
 import androidx.fragment.app.Fragment
 import com.example.bondoman.R
+import com.example.bondoman.databinding.ActivityMainBinding
 import com.example.bondoman.fragments.SettingsFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.bondoman.fragments.TransactionFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNavigationView : BottomNavigationView
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        bottomNavigationView = findViewById(R.id.navbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+        binding.navbar.setOnItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
-                R.id.transaction_nav -> {
+                R.id.settings_nav -> {
                     replaceFragment(SettingsFragment())
+                    true
+                }
+                R.id.transaction_nav -> {
+                    replaceFragment(TransactionFragment())
                     true
                 }
                 else -> {
@@ -30,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-//
+    //
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
