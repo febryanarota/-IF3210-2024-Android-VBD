@@ -2,7 +2,6 @@ package com.example.bondoman.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.SurfaceControl.Transaction
 import androidx.fragment.app.Fragment
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityMainBinding
