@@ -1,6 +1,7 @@
 package com.example.bondoman.adapter
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.databinding.ItemTransactionBinding
@@ -12,7 +13,8 @@ class TransactionAdapter(private val context: Context, private val transactions:
         parent: ViewGroup,
         viewType: Int
     ): TransactionAdapter.ViewHolder {
-        TODO("Not yet implemented")
+        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
