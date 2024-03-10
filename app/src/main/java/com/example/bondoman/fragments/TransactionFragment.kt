@@ -38,6 +38,14 @@ class TransactionFragment: Fragment() {
             transactions.addAll(transactionSnapshot)
             transactionAdapter.notifyDataSetChanged()
         })
+        viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
+            binding.swipeContainer.isRefreshing = isRefreshing
+        })
+
+        binding.swipeContainer.setOnRefreshListener {
+            viewModel.fetchNewTransaction()
+        }
+
         return binding.root
     }
 
