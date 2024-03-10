@@ -28,10 +28,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:menu="@menu/menu_navbar"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        android:background="@color/white"
-        android:outlineSpotShadowColor="@color/P1"
+        app:itemIconTint="?textFillColor"
+        app:itemTextColor="?textFillColor"
+        android:background="?colorAccent"
         app:itemIconSize="30dp"
         />
 

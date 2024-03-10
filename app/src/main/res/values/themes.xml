@@ -10,10 +10,6 @@
         <item name="fontFamily">@font/poppins</item>
     </style>
 
-    <style name="App.Custom.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/P1</item>
-    </style>
-
     <style name="Widget.MaterialComponents.Button.IconOnly">
         <item name="iconPadding">0dp</item>
         <item name="android:insetTop">0dp</item>

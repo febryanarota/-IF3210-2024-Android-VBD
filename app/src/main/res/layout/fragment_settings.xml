@@ -52,7 +52,9 @@
             android:textAlignment="textStart"
             style="@style/Widget.MaterialComponents.Button.Icon"
             app:icon = "@drawable/resource_import"
-            android:text="@string/download_button" />
+            android:text="@string/download_button"
+            android:textColor="@color/white"
+            />
 
         <Button
             android:id="@+id/sendButton"
@@ -62,7 +64,8 @@
             android:textAlignment="textStart"
             style="@style/Widget.MaterialComponents.Button.Icon"
             app:icon = "@drawable/send"
-            android:text="@string/send_button" />
+            android:text="@string/send_button"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/randomizeButton"
@@ -72,6 +75,8 @@
             android:textAlignment="textStart"
             style="@style/Widget.MaterialComponents.Button.Icon"
             app:icon = "@drawable/sort_random"
-            android:text="@string/randomize_button" />
+
+            android:text="@string/randomize_button"
+            android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
