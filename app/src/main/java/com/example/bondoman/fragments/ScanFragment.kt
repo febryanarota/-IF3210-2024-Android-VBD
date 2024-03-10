@@ -74,8 +74,9 @@ class ScanFragment : Fragment() {
                 binding.previewView.visibility = View.INVISIBLE
                 binding.imageView.setImageURI(uri)
                 binding.imageView.visibility = View.VISIBLE
-                // TODO send uri to backend and create transaction
                 enableLoadingAnimation()
+                disableAllButtons()
+                // TODO send uri to backend and create transaction
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -107,6 +108,13 @@ class ScanFragment : Fragment() {
         }
     }
 
+    private fun disableAllButtons() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.captureButton.isEnabled = false
+            binding.galleryButton.isEnabled = false
+        }
+    }
+
     private fun playShutterSound() {
         val audio: AudioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
         when (audio.ringerMode) {
@@ -129,10 +137,10 @@ class ScanFragment : Fragment() {
                     playShutterSound()
                     lifecycleScope.launch(Dispatchers.Main) {
                         binding.previewView.controller = null
-                        binding.captureButton.isEnabled = false
                     }
-                    // TODO call backend and add transaction
+                    disableAllButtons()
                     enableLoadingAnimation()
+                    // TODO call backend and add transaction
                 }
             }
         )
