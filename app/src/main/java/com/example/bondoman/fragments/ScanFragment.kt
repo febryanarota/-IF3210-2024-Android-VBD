@@ -5,10 +5,15 @@ import android.content.Context
 import android.media.AudioManager
 import android.media.MediaActionSound
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
@@ -39,6 +44,7 @@ class ScanFragment : Fragment() {
         get() = _binding!!
 
     private lateinit var camera: LifecycleCameraController
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +66,26 @@ class ScanFragment : Fragment() {
             binding.previewView.controller = camera
         }
 
+        // Initialize pickMedia
+        pickMedia = registerForActivityResult(PickVisualMedia()) {
+                uri ->
+            if (uri != null) {
+                Log.d("PhotoPicker", "Selected URI: $uri")
+                binding.previewView.visibility = View.INVISIBLE
+                binding.imageView.setImageURI(uri)
+                binding.imageView.visibility = View.VISIBLE
+                // TODO 
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
         // Capture button callback
         binding.captureButton.setOnClickListener {
             onCaptureButtonClicked()
+        }
+        binding.galleryButton.setOnClickListener {
+            onGalleryButtonClicked()
         }
     }
 
@@ -93,11 +116,16 @@ class ScanFragment : Fragment() {
                     playShutterSound()
                     lifecycleScope.launch(Dispatchers.Main) {
                         binding.previewView.controller = null
+                        binding.captureButton.isEnabled = false
                     }
                     // TODO call backend and add transaction
                 }
             }
         )
+    }
+
+    private fun onGalleryButtonClicked() {
+        pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
 
     companion object {

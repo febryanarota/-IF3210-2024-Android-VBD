@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScanFragment">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="selected photo"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/previewView"
+        app:layout_constraintEnd_toEndOf="@+id/previewView"
+        app:layout_constraintStart_toStartOf="@+id/previewView"
+        app:layout_constraintTop_toTopOf="@+id/previewView"
+        tools:src="@tools:sample/avatars" />
+
     <ImageButton
         android:id="@+id/captureButton"
         android:layout_width="74dp"
@@ -31,8 +43,12 @@
         android:layout_marginBottom="117dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.camera.view.PreviewView>
 
     <TextView
         android:id="@+id/textView"
@@ -47,7 +63,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/galleryButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:backgroundTint="@android:color/transparent"
