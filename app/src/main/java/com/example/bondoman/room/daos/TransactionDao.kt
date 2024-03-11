@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.bondoman.room.models.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
@@ -24,6 +25,6 @@ interface TransactionDao {
     suspend fun updateTransaction(transaction: List<Transaction>) : Int
 
     @Query("SELECT * FROM 'transaction'")
-    suspend fun getAllTransaction() : List<Transaction>
+    fun getAllTransaction() : Flow<List<Transaction>>
 
 }
