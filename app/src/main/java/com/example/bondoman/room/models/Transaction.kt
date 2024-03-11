@@ -11,5 +11,5 @@ data class Transaction(
     val category: String = "",
     val price: String = "",
     val date: Date = Date(),
-    val location: String = ""
+    val location: String = "",
 )
