@@ -26,11 +26,11 @@ class TransactionAdapter(private val context: Context, private val transactions:
 
     inner class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
-            binding.tvName.text = transaction.name
-            binding.tvDesc.text = transaction.desc
+            binding.tvName.text = transaction.place
+            binding.tvDesc.text = transaction.category
             binding.tvPrice.text = transaction.price
             binding.tvLocation.text = transaction.location
-            binding.tvDate.text = transaction.date
+            binding.tvDate.text = transaction.date.toString()
         }
     }
 }

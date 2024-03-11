@@ -18,10 +18,10 @@ interface TransactionDao {
     suspend fun insertTransactions(transaction: List<Transaction>) : List<Long>
 
     @Delete
-    suspend fun removeTransaction(transaction: List<Transaction>) : Long
+    suspend fun removeTransaction(transaction: List<Transaction>) : Int
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateTransaction(transaction: List<Transaction>) : Long
+    suspend fun updateTransaction(transaction: List<Transaction>) : Int
 
     @Query("SELECT * FROM 'transaction'")
     suspend fun getAllTransaction() : List<Transaction>
