@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bondoman.adapter.TransactionAdapter
 import com.example.bondoman.databinding.TransactionFragmentBinding
-import com.example.bondoman.models.Transaction
+import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 
 private const val TAG = "TransactionFragment"

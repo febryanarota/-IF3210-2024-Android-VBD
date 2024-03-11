@@ -1,4 +1,4 @@
-package com.example.bondoman.models
+package com.example.bondoman.room.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.databinding.ItemTransactionBinding
-import com.example.bondoman.models.Transaction
+import com.example.bondoman.room.models.Transaction
 
 class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>)
     : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {

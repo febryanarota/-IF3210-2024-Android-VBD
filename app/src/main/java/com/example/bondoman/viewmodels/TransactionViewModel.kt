@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.bondoman.models.Transaction
+import com.example.bondoman.room.models.Transaction
 
 private const val TAG = "TransactionViewModel"
 class TransactionViewModel: ViewModel() {
