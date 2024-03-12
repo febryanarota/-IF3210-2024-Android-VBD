@@ -29,8 +29,6 @@ class LoginActivity : AppCompatActivity() {
                 TokenManager.init(this)
                 TokenManager.saveToken(token)
                 navigateToMain(this)
-            } else {
-                // Handle login failure
             }
         })
 
@@ -38,17 +36,16 @@ class LoginActivity : AppCompatActivity() {
             binding.message.text = message
         })
 
-        // Set up login button click listener
+        // login button click listener
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            // Call login method in the ViewModel
             loginViewModel.login(email, password)
         }
     }
         private fun navigateToMain(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
-            // Note: We don't finish the activity here since we're not in the activity scope
+            finish()
         }
 }
