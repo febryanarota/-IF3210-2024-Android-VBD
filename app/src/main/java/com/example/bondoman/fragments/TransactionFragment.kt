@@ -38,19 +38,25 @@ class TransactionFragment: Fragment() {
 //        viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         viewModel = ViewModelProvider(this, ViewModelFactory(TransactionRepository(TransactionDatabase.getDatabaseInstance(requireContext())))).get(TransactionViewModel::class.java)
 
+        viewModel.deleteAll()
+        for (i in 1..5) {
+            viewModel.addTransaction("Warteg")
+        }
+
+
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
             Log.i(TAG, "Received transactions from view model")
             transactions.clear()
             transactions.addAll(transactionSnapshot)
             transactionAdapter.notifyDataSetChanged()
         })
-//        viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
-//            binding.swipeContainer.isRefreshing = isRefreshing
-//        })
-//
-//        binding.swipeContainer.setOnRefreshListener {
-//            viewModel.fetchNewTransaction()
-//        }
+        viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
+            binding.swipeContainer.isRefreshing = isRefreshing
+        })
+
+        binding.swipeContainer.setOnRefreshListener {
+            viewModel.fetchNewTransaction()
+        }
 
         return binding.root
     }

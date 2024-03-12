@@ -15,14 +15,22 @@ import java.util.Date
 
 private const val TAG = "TransactionViewModel"
 class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
+    //    private val transactionsLiveData: MutableLiveData<List<Transaction>>
+    private val isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+
     fun getAllTransaction() = transactionRepository.getAllTransactions().asLiveData(viewModelScope.coroutineContext)
 
     fun addTransaction(place: String) = viewModelScope.launch {
         val transactionObject = Transaction(place = place)
         transactionRepository.insertTransaction(transactionObject)
     }
-//    private val transactionsLiveData: MutableLiveData<List<Transaction>>
-//    private val isRefreshingLiveData: MutableLiveData<Boolean>
+
+    fun deleteAll() = viewModelScope.launch {
+        transactionRepository.deleteAll()
+    }
+    fun addTransactions(transactions: MutableList<Transaction>) = viewModelScope.launch {
+        transactionRepository.insertTransactions(transactions)
+    }
 //
 //    init {
 //        Log.i(TAG, "init")
@@ -42,18 +50,18 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 ////        return transactions
 ////    }
 ////
-//    fun getIsRefreshingData(): LiveData<Boolean> {
-//        return isRefreshingLiveData
-//    }
+    fun getIsRefreshingData(): LiveData<Boolean> {
+        return isRefreshingLiveData
+    }
 //
-//    fun fetchNewTransaction() {
-//        Log.i(TAG, "fetchNewTransaction")
-//        isRefreshingLiveData.value = true
-//        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-//            override fun run() {
-//                transactionsLiveData.value = getAllTransaction()
-//                isRefreshingLiveData.value = false
-//            }
-//        },1_000)
-//    }
+    fun fetchNewTransaction() {
+        Log.i(TAG, "fetchNewTransaction")
+        isRefreshingLiveData.value = true
+        Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
+            override fun run() {
+                addTransaction("Hiha")
+                isRefreshingLiveData.value = false
+            }
+        },1_000)
+    }
 }

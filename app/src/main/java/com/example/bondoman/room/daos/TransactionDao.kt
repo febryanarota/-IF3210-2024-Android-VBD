@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TransactionDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransaction(transaction: Transaction) : Long // Long as the key that represents the id
 
     @Insert
@@ -20,6 +20,9 @@ interface TransactionDao {
 
     @Delete
     suspend fun removeTransaction(transaction: List<Transaction>) : Int
+
+    @Query("DELETE FROM 'transaction'")
+    suspend fun delete()
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     suspend fun updateTransaction(transaction: List<Transaction>) : Int

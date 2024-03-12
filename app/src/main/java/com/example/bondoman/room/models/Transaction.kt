@@ -6,10 +6,10 @@ import java.util.Date
 
 @Entity
 data class Transaction(
-    @PrimaryKey(autoGenerate = true) val id: Int = -1,
-    val place: String = "",
-    val category: String = "",
-    val price: String = "",
-    val date: Date = Date(),
-    val location: String = "",
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
+    var place: String = "",
+    var category: String = "",
+    var price: String = "",
+    var date: Date = Date(),
+    var location: String = "",
 )
