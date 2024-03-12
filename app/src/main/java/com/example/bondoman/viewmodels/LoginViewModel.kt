@@ -1,6 +1,5 @@
 package com.example.bondoman.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
-    val loginResult = MutableLiveData<Boolean>()
+    val token = MutableLiveData<String>()
     val message = MutableLiveData<String>()
 
     fun login(email: String, password: String) {
@@ -26,9 +25,7 @@ class LoginViewModel : ViewModel() {
                 apiService.login(loginRequest).enqueue(object : Callback<LoginRes> {
                     override fun onResponse(call: Call<LoginRes>, response: Response<LoginRes>) {
                         if (response.isSuccessful) {
-                            // to do store the token
-                            val token = response.body()?.token
-                            loginResult.value = true
+                            token.value = response.body()?.token
                         } else {
                             message.value = "Login failed ${response.message()}"
                         }

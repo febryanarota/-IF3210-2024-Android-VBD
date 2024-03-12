@@ -1,15 +1,12 @@
 package com.example.bondoman.activities
 
+import TokenManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityLoginBinding
 import com.example.bondoman.viewmodels.LoginViewModel
 
@@ -26,10 +23,11 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
-        // Observe login result
-        loginViewModel.loginResult.observe(this, Observer { loginResult ->
-            if (loginResult) {
-                // Navigate to MainActivity
+        // Observe token result
+        loginViewModel.token.observe(this, Observer { token ->
+            if (token.isNotEmpty()) {
+                TokenManager.init(this)
+                TokenManager.saveToken(token)
                 navigateToMain(this)
             } else {
                 // Handle login failure

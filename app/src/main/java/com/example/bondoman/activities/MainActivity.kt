@@ -1,5 +1,6 @@
 package com.example.bondoman.activities
 
+import TokenManager
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +24,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        // if !token
-//        navigateToLogin(this)
+        TokenManager.init(this)
+
+        val token = TokenManager.getToken()
+        if (token.isNullOrEmpty()) {
+            navigateToLogin(this)
+        }
 
         replaceFragment(SettingsFragment())
 
