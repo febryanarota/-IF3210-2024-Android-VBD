@@ -1,5 +1,8 @@
 package com.example.bondoman.activities
 
+import TokenManager
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.SurfaceControl.Transaction
@@ -20,7 +23,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(TransactionFragment())
+
+        TokenManager.init(this)
+
+        val token = TokenManager.getToken()
+        if (token.isNullOrEmpty()) {
+            navigateToLogin(this)
+        }
+
+        replaceFragment(SettingsFragment())
 
         binding.navbar.setOnItemSelectedListener { menuItem ->
             when(menuItem.itemId) {
@@ -38,9 +49,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+
     }
     //
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
+
+    private fun navigateToLogin(context: Context) {
+        val intent = Intent(context, LoginActivity::class.java)
+        context.startActivity(intent)
+        // Note: We don't finish the activity here since we're not in the activity scope
+    }
+
 }
