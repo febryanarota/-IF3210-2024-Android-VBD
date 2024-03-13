@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.databinding.ActivityLoginBinding
+import com.example.bondoman.utils.TokenValidationService
 import com.example.bondoman.viewmodels.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -28,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
             if (token.isNotEmpty()) {
                 TokenManager.init(this)
                 TokenManager.saveToken(token)
+                restartTokenValidationService()
                 navigateToMain(this)
             }
         })
@@ -43,9 +45,15 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.login(email, password)
         }
     }
-        private fun navigateToMain(context: Context) {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-            finish()
-        }
+    private fun navigateToMain(context: Context) {
+        val intent = Intent(context, MainActivity::class.java)
+        context.startActivity(intent)
+        finish()
+    }
+
+    private fun restartTokenValidationService() {
+        val serviceIntent = Intent(this, TokenValidationService::class.java)
+        stopService(serviceIntent)
+        startService(serviceIntent)
+    }
 }
