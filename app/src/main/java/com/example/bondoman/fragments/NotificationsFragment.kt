@@ -1,16 +1,11 @@
 package com.example.bondoman.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.bondoman.databinding.FragmentNotificationsBinding
 import com.example.bondoman.databinding.FragmentSettingsBinding
-import com.example.bondoman.viewmodels.NotificationsViewModel
 
 class NotificationsFragment : Fragment() {
 
