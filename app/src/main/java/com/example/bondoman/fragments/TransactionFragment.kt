@@ -50,6 +50,10 @@ class TransactionFragment : Fragment() {
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
+//        binding.rvTransactions.setOnClickListener { view
+//            if ()
+//        }
+
 //        viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         viewModel = ViewModelProvider(this, ViewModelFactory(
             TransactionRepository(
