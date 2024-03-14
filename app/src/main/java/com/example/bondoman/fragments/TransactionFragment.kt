@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.ViewModelFactoryDsl
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bondoman.adapter.TransactionAdapter
+import com.example.bondoman.databinding.ItemTransactionBinding
 import com.example.bondoman.databinding.TransactionFragmentBinding
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
@@ -23,6 +24,7 @@ class TransactionFragment: Fragment() {
     private lateinit var viewModel: TransactionViewModel
     private var _binding: TransactionFragmentBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +58,14 @@ class TransactionFragment: Fragment() {
 
         binding.swipeContainer.setOnRefreshListener {
             viewModel.fetchNewTransaction()
+        }
+
+
+
+        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+        bindingItem.bttnTrash.setOnClickListener {
+            viewModel.deleteAll()
+            Log.i("Transaction", "Clicked!!!")
         }
 
         return binding.root
