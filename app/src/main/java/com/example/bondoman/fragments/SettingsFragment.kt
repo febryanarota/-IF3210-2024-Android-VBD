@@ -1,19 +1,14 @@
 package com.example.bondoman.fragments
 
+import TokenManager
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bondoman.R
-import com.example.bondoman.adapter.TransactionAdapter
+import com.example.bondoman.activities.LoginActivity
 import com.example.bondoman.databinding.FragmentSettingsBinding
-import com.example.bondoman.databinding.TransactionFragmentBinding
-import com.example.bondoman.models.Transaction
-import com.example.bondoman.viewmodels.TransactionViewModel
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -25,7 +20,12 @@ class SettingsFragment : Fragment() {
     ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-
+        binding.logoutButton.setOnClickListener {
+            TokenManager.removeToken()
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()  // finish the current activity (MainActivity)
+        }
         return binding.root
     }
 }

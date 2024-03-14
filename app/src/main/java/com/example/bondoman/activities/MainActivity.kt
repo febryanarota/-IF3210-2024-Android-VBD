@@ -1,21 +1,22 @@
 package com.example.bondoman.activities
 
 import TokenManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.SurfaceControl.Transaction
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityMainBinding
 import com.example.bondoman.fragments.SettingsFragment
 import com.example.bondoman.fragments.TransactionFragment
-import com.example.bondoman.viewmodels.TransactionViewModel
+import com.example.bondoman.utils.TokenValidationService
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +24,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val serviceIntent = Intent(this, TokenValidationService::class.java)
+        startService(serviceIntent)
+        registerReceiver(broadcastReceiver, IntentFilter("com.example.bondoman.ACTION_TOKEN_EXPIRED"), RECEIVER_EXPORTED)
 
         TokenManager.init(this)
-
         val token = TokenManager.getToken()
         if (token.isNullOrEmpty()) {
             navigateToLogin(this)
         }
+
 
         replaceFragment(SettingsFragment())
 
@@ -49,10 +53,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
-    //
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED") {
+                TokenManager.removeToken()
+                navigateToLogin(this@MainActivity)
+            }
+        }
+    }
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
@@ -60,7 +75,8 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToLogin(context: Context) {
         val intent = Intent(context, LoginActivity::class.java)
         context.startActivity(intent)
-        // Note: We don't finish the activity here since we're not in the activity scope
+        finish()
     }
+
 
 }
