@@ -18,4 +18,5 @@
     <string name="send_button">Send transactions</string>
     <string name="randomize_button">Randomize Button</string>
     <string name="logoutButton">Logout</string>
+    <string name="title_scan">Scan</string>
 </resources>
