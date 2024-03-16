@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.bondoman.room.models.Transaction
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface TransactionDao {
@@ -23,6 +24,9 @@ interface TransactionDao {
 
     @Query("DELETE FROM 'transaction'")
     suspend fun delete()
+
+    @Delete
+    suspend fun deleteTransaction(transaction: Transaction)
 
     @Update(onConflict = OnConflictStrategy.ABORT)
     suspend fun updateTransaction(transaction: List<Transaction>) : Int

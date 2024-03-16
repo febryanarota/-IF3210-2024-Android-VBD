@@ -33,6 +33,10 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         transactionRepository.insertTransaction(transactionObject)
     }
 
+    fun deleteTransaction(transaction: Transaction) = viewModelScope.launch {
+        transactionRepository.deleteTransaction(transaction)
+    }
+
     fun deleteAll() = viewModelScope.launch {
         transactionRepository.deleteAll()
     }
