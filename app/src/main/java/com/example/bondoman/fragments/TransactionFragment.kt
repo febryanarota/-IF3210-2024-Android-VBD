@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bondoman.R
 import com.example.bondoman.adapter.TransactionAdapter
 import com.example.bondoman.databinding.FragmentTransactionBinding
 import com.example.bondoman.repositories.TransactionRepository
@@ -80,6 +82,9 @@ class TransactionFragment : Fragment() {
             viewModel.fetchNewTransaction()
         }
 
+        binding.bttnAddTransaction.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
+        }
 
 //
 //        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
