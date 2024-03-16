@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.databinding.ItemTransactionBinding
 import com.example.bondoman.room.models.Transaction
+import com.example.bondoman.viewmodels.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>)
+class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>, private val viewModel: TransactionViewModel)
     : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -35,7 +36,10 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.tvPrice.text = transaction.price
             binding.tvLocation.text = transaction.location
             binding.tvDate.text = formatDateToString(transaction.date)
-//            binding.bttnTrash.setOnClickListener
+            binding.bttnTrash.setOnClickListener {
+                viewModel.deleteTransaction(transaction)
+            }
+//            binding.bttnEdit.setOnClickListener()
         }
     }
 

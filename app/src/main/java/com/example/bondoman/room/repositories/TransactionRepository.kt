@@ -16,5 +16,10 @@ class TransactionRepository(private val transactionDatabase: TransactionDatabase
         transactionDatabase.transactionDao().delete()
     }
 
+    suspend fun deleteTransaction(transaction: Transaction) {
+        transactionDatabase.transactionDao().deleteTransaction(transaction)
+    }
+
     fun getAllTransactions() = transactionDatabase.transactionDao().getAllTransaction()
+
 }

@@ -1,7 +1,6 @@
 package com.example.bondoman.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,16 +46,16 @@ class TransactionFragment : Fragment() {
 
 
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-        val transactions = mutableListOf<Transaction>()
-        val transactionAdapter = TransactionAdapter(requireContext(), transactions)
-        binding.rvTransactions.adapter = transactionAdapter
-        binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel = ViewModelProvider(this, ViewModelFactory(
             TransactionRepository(
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
 
+        val transactions = mutableListOf<Transaction>()
+        val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel)
+        binding.rvTransactions.adapter = transactionAdapter
+        binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
         viewModel.deleteAll()
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
