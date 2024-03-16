@@ -62,11 +62,9 @@ class TransactionFragment : Fragment() {
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
 
-        viewModel.deleteAll()
         for (i in 1..5) {
             viewModel.addTransaction("Warteg")
         }
-
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
             Log.i(TAG, "Received transactions from view model")
