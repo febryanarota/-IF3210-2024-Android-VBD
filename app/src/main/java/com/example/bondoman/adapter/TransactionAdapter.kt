@@ -3,7 +3,10 @@ package com.example.bondoman.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bondoman.R
 import com.example.bondoman.databinding.ItemTransactionBinding
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
@@ -39,7 +42,9 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.bttnTrash.setOnClickListener {
                 viewModel.deleteTransaction(transaction)
             }
-//            binding.bttnEdit.setOnClickListener()
+//            binding.bttnEdit.setOnClickListener {
+//                NavHostFragment.findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
+//            }
         }
     }
 
