@@ -52,24 +52,22 @@ class TransactionFragment : Fragment() {
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
-//        binding.rvTransactions.setOnClickListener { view
-//            if ()
-//        }
-
-//        viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         viewModel = ViewModelProvider(this, ViewModelFactory(
             TransactionRepository(
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
 
-        for (i in 1..5) {
-            viewModel.addTransaction("Warteg")
-        }
+        viewModel.deleteAll()
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
-            Log.i(TAG, "Received transactions from view model")
-            transactions.clear()
-            transactions.addAll(transactionSnapshot)
+            if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
+                transactions.clear()
+                transactions.addAll(transactionSnapshot)
+            } else {
+                for (i in 1..5) {
+                    viewModel.addTransaction("Warteg")
+                }
+            }
             transactionAdapter.notifyDataSetChanged()
         })
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
@@ -83,13 +81,6 @@ class TransactionFragment : Fragment() {
         binding.bttnAddTransaction.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
         }
-
-//
-//        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
-//        bindingItem.bttnTrash.setOnClickListener {
-//            viewModel.deleteAll()
-//            Log.i("Transaction", "Clicked!!!")
-//        }
 
         return binding.root
     }

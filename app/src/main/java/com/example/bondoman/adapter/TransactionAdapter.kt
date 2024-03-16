@@ -12,6 +12,7 @@ import java.util.Locale
 
 class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>)
     : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -34,6 +35,7 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.tvPrice.text = transaction.price
             binding.tvLocation.text = transaction.location
             binding.tvDate.text = formatDateToString(transaction.date)
+//            binding.bttnTrash.setOnClickListener
         }
     }
 
