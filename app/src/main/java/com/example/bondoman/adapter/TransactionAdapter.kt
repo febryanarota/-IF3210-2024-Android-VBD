@@ -38,7 +38,7 @@ class TransactionAdapter(private val context: Context, private val transactions:
     }
 
     fun formatDateToString(date: Date): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(date)
     }
 }
