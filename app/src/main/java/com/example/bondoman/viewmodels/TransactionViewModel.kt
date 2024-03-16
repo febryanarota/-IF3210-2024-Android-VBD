@@ -28,8 +28,8 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     fun getAllTransaction() = transactionRepository.getAllTransactions().asLiveData(viewModelScope.coroutineContext)
 
-    fun addTransaction(place: String) = viewModelScope.launch {
-        val transactionObject = Transaction(place = place)
+    fun addTransaction(title: String) = viewModelScope.launch {
+        val transactionObject = Transaction(place = title)
         transactionRepository.insertTransaction(transactionObject)
     }
 
