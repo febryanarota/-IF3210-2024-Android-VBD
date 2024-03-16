@@ -1,5 +1,6 @@
 package com.example.bondoman.viewmodels
 
+import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,16 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.models.Transaction
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
 
 //class TransactionViewModel : ViewModel() {
 //
@@ -71,5 +81,68 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                 isRefreshingLiveData.value = false
             }
         },1_000)
+    }
+
+    fun convertTransactionsToExcelFile(fileName: String): Boolean {
+        viewModelScope.launch() {
+            try {
+                transactionRepository.getAllTransactions().collect { transactions ->
+
+                    val workbook: HSSFWorkbook = HSSFWorkbook()
+                    val sheet = workbook.createSheet("Transactions")
+                    val headerRow = sheet.createRow(0)
+                    headerRow.createCell(0).setCellValue("ID")
+                    headerRow.createCell(1).setCellValue("Place")
+                    headerRow.createCell(2).setCellValue("Category")
+                    headerRow.createCell(3).setCellValue("Price")
+                    headerRow.createCell(4).setCellValue("Date")
+                    headerRow.createCell(5).setCellValue("Location")
+
+                    var rowNum = 1
+                    for (transaction in transactions) {
+                        val row = sheet.createRow(rowNum++)
+                        row.createCell(0).setCellValue(transaction.id.toDouble())
+                        row.createCell(1).setCellValue(transaction.place)
+                        Log.i(TAG, transaction.place)
+                        row.createCell(2).setCellValue(transaction.category)
+                        Log.i(TAG, transaction.category)
+                        row.createCell(3).setCellValue(transaction.price)
+                        Log.i(TAG, transaction.price)
+                        row.createCell(4).setCellValue(transaction.date.toString())
+                        row.createCell(5).setCellValue(transaction.location)
+                        Log.i(TAG, "6")
+                    }
+                    val dateFormat = SimpleDateFormat("dd-MM-yy")
+                    val currentDate = Date()
+                    saveWorkbook(workbook, "${dateFormat.format(currentDate)}.xls")
+                    workbook.close()
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Log.i("TAG", "failed ${e.message}")
+            }
+        }
+        return true
+    }
+
+    fun saveWorkbook(hssfWorkbook: HSSFWorkbook, fileName: String): Boolean {
+        return try {
+            val downloadDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString())
+            Log.i(TAG, "${downloadDir}")
+            if (!downloadDir.exists()) {
+                downloadDir.mkdirs()
+                Log.i(TAG, "downloadDir doesn't exist")
+            }
+            val file = File(downloadDir, fileName)
+            val fileOutputStream = FileOutputStream(file)
+            hssfWorkbook.write(fileOutputStream)
+            fileOutputStream.close()
+            Log.i(TAG, "file saved")
+            true
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Log.e(TAG, "failed to save the file")
+            false
+        }
     }
 }
