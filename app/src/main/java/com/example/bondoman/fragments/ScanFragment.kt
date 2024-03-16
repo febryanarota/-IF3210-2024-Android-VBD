@@ -1,31 +1,49 @@
 package com.example.bondoman.fragments
 
+import TokenManager
 import android.Manifest
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.graphics.Matrix
 import android.media.AudioManager
 import android.media.MediaActionSound
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
-import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
 import androidx.lifecycle.lifecycleScope
-import com.example.bondoman.R
 import com.example.bondoman.databinding.FragmentScanBinding
+import com.example.bondoman.models.BillReq
+import com.example.bondoman.models.BillRes
+import com.example.bondoman.services.RetrofitInstance
 import com.example.bondoman.utils.PermissionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.concurrent.Executors
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,7 +94,18 @@ class ScanFragment : Fragment() {
                 binding.imageView.visibility = View.VISIBLE
                 enableLoadingAnimation()
                 disableAllButtons()
-                // TODO send uri to backend and create transaction
+//                sendImageToBackend(bitmap)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    val cache = requireContext().cacheDir
+                    val imgFile = File(cache, "image.jpg")
+
+                    imgFile.outputStream().use {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, it)
+                    }
+                    sendImageToBackend(imgFile)
+                }
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
@@ -140,10 +169,50 @@ class ScanFragment : Fragment() {
                     }
                     disableAllButtons()
                     enableLoadingAnimation()
-                    // TODO call backend and add transaction
+                    val bitmap = image.toBitmap().rotate(image.imageInfo.rotationDegrees.toFloat())
+
+                    val cache = requireContext().cacheDir
+                    val imgFile = File(cache, "image.jpg")
+
+                    imgFile.outputStream().use {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, it)
+                    }
+                    sendImageToBackend(imgFile)
                 }
             }
         )
+    }
+    private fun Bitmap.rotate(degrees: Float): Bitmap =
+        Bitmap.createBitmap(this, 0, 0, width, height, Matrix().apply { postRotate(degrees) }, true)
+
+
+    private fun sendImageToBackend(file: File) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val apiService = RetrofitInstance.bill
+            val part = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody("image/jpeg".toMediaType()))
+
+            // No Permission TODO choose redirect to login / do nothing
+            if (TokenManager.getRemainingTime() <= 0) {
+                return@launch;
+            }
+
+            val token = ("Bearer " + TokenManager.getToken()!!)
+
+
+            apiService.upload(token = token, file = part).enqueue(object : Callback<BillRes> {
+                override fun onResponse(
+                    call: Call<BillRes>,
+                    response: Response<BillRes>
+                ) {
+                    // TODO show result
+                }
+
+                override fun onFailure(call: Call<BillRes>, t: Throwable) {
+                    t.printStackTrace()
+                }
+            })
+
+        }
     }
 
     private fun onGalleryButtonClicked() {

@@ -79,7 +79,7 @@ dependencies {
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
 
     val lifecycleVersion = "2.7.0"
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+//    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
 //    viewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 //    liveData
