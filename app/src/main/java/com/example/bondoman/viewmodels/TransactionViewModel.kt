@@ -1,17 +1,25 @@
 package com.example.bondoman.viewmodels
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.models.Transaction
 import kotlinx.coroutines.launch
-import java.util.Date
+
+//class TransactionViewModel : ViewModel() {
+//
+//    private val _text = MutableLiveData<String>().apply {
+//        value = "This is home Fragment"
+//    }
+//    val text: LiveData<String> = _text
+//}
+
 
 private const val TAG = "TransactionViewModel"
 class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
@@ -31,7 +39,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     fun addTransactions(transactions: MutableList<Transaction>) = viewModelScope.launch {
         transactionRepository.insertTransactions(transactions)
     }
-//
+    //
 //    init {
 //        Log.i(TAG, "init")
 //        transactionsLiveData = MutableLiveData()
@@ -53,7 +61,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     fun getIsRefreshingData(): LiveData<Boolean> {
         return isRefreshingLiveData
     }
-//
+    //
     fun fetchNewTransaction() {
         Log.i(TAG, "fetchNewTransaction")
         isRefreshingLiveData.value = true

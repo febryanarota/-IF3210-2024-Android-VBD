@@ -3,7 +3,6 @@ package com.example.bondoman.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.repositories.TransactionRepository
-import com.example.bondoman.room.models.Transaction
 
 class ViewModelFactory(private val transactionRepository: TransactionRepository)
     : ViewModelProvider.NewInstanceFactory() {

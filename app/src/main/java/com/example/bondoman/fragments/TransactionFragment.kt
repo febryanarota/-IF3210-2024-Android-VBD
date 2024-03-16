@@ -8,37 +8,57 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.ViewModelFactoryDsl
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bondoman.adapter.TransactionAdapter
-import com.example.bondoman.databinding.ItemTransactionBinding
-import com.example.bondoman.databinding.TransactionFragmentBinding
+import com.example.bondoman.databinding.FragmentTransactionBinding
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
 
+
 private const val TAG = "TransactionFragment"
-class TransactionFragment: Fragment() {
+class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
-    private var _binding: TransactionFragmentBinding? = null
+
+    private var _binding: FragmentTransactionBinding? = null
+
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = TransactionFragmentBinding.inflate(inflater, container, false)
+//        val homeViewModel =
+//            ViewModelProvider(this).get(HomeViewModel::class.java)
+//
+//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+//        val root: View = binding.root
+//
+//        val textView: TextView = binding.textHome
+//        homeViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
+//        return root
 
+
+        _binding = FragmentTransactionBinding.inflate(inflater, container, false)
         val transactions = mutableListOf<Transaction>()
         val transactionAdapter = TransactionAdapter(requireContext(), transactions)
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
+//        binding.rvTransactions.setOnClickListener { view
+//            if ()
+//        }
+
 //        viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        viewModel = ViewModelProvider(this, ViewModelFactory(TransactionRepository(TransactionDatabase.getDatabaseInstance(requireContext())))).get(TransactionViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory(
+            TransactionRepository(
+                TransactionDatabase.getDatabaseInstance(requireContext()))
+        )).get(TransactionViewModel::class.java)
 
         viewModel.deleteAll()
         for (i in 1..5) {
@@ -61,20 +81,16 @@ class TransactionFragment: Fragment() {
         }
 
 
-
-        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
-        bindingItem.bttnTrash.setOnClickListener {
-            viewModel.deleteAll()
-            Log.i("Transaction", "Clicked!!!")
-        }
+//
+//        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
+//        bindingItem.bttnTrash.setOnClickListener {
+//            viewModel.deleteAll()
+//            Log.i("Transaction", "Clicked!!!")
+//        }
 
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//    }
-//
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
