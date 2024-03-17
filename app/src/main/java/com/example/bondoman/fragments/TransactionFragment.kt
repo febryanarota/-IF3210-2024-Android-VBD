@@ -97,7 +97,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
             arguments = bundle
         }
 
-        parentFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, fragment).commit()
+        findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction, bundle)
     }
 
 

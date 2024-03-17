@@ -55,13 +55,11 @@ class AddTransactionFragment() : Fragment() {
             if (idData != null) {
                 val updatedTransaction = Transaction(id = Long.parseLong(idData), place = title, price = nominal, category = category, location = location)
                 viewModel.updateTransaction(updatedTransaction)
-                val fragment = TransactionFragment()
-                parentFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, fragment).commit()
             } else {
                 val newTransaction = Transaction(place = title, price = nominal, category = category, location = location)
                 viewModel.addTransaction(newTransaction)
-                findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
             }
+            findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
         }
         return binding.root
     }
