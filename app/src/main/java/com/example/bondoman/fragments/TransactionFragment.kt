@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bondoman.R
 import com.example.bondoman.adapter.TransactionAdapter
 import com.example.bondoman.databinding.FragmentTransactionBinding
 import com.example.bondoman.repositories.TransactionRepository
@@ -19,7 +21,7 @@ import com.example.bondoman.viewmodels.ViewModelFactory
 
 
 private const val TAG = "TransactionFragment"
-class TransactionFragment : Fragment() {
+class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListener {
     private lateinit var viewModel: TransactionViewModel
 
     private var _binding: FragmentTransactionBinding? = null
@@ -45,32 +47,27 @@ class TransactionFragment : Fragment() {
 
 
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-        val transactions = mutableListOf<Transaction>()
-        val transactionAdapter = TransactionAdapter(requireContext(), transactions)
-        binding.rvTransactions.adapter = transactionAdapter
-        binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
-//        binding.rvTransactions.setOnClickListener { view
-//            if ()
-//        }
-
-//        viewModel = ViewModelProvider(this).get(TransactionViewModel::class.java)
         viewModel = ViewModelProvider(this, ViewModelFactory(
             TransactionRepository(
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
 
-        viewModel.deleteAll()
-        for (i in 1..5) {
-            viewModel.addTransaction("Warteg")
-        }
-
+        val transactions = mutableListOf<Transaction>()
+        val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel, this)
+        binding.rvTransactions.adapter = transactionAdapter
+        binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
-            Log.i(TAG, "Received transactions from view model")
-            transactions.clear()
-            transactions.addAll(transactionSnapshot)
-            transactionAdapter.notifyDataSetChanged()
+            if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
+                transactions.clear()
+                transactions.addAll(transactionSnapshot)
+                transactionAdapter.notifyDataSetChanged()
+            } else {
+                for (i in 1..5) {
+                    viewModel.addTransaction(Transaction(place = "Warteg"))
+                }
+            }
         })
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
             binding.swipeContainer.isRefreshing = isRefreshing
@@ -80,16 +77,29 @@ class TransactionFragment : Fragment() {
             viewModel.fetchNewTransaction()
         }
 
-
-//
-//        val bindingItem = ItemTransactionBinding.inflate(LayoutInflater.from(requireContext()), container, false)
-//        bindingItem.bttnTrash.setOnClickListener {
-//            viewModel.deleteAll()
-//            Log.i("Transaction", "Clicked!!!")
-//        }
+        binding.bttnAddTransaction.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
+        }
 
         return binding.root
     }
+
+    override fun onEditTransaction(transaction: Transaction) {
+        val bundle = Bundle().apply {
+            putString("id", transaction.id.toString())
+            putString("title", transaction.place)
+            putString("nominal", transaction.price)
+            putString("category", transaction.category)
+            putString("location", transaction.location)
+        }
+
+        val fragment = AddTransactionFragment().apply {
+            arguments = bundle
+        }
+
+        findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction, bundle)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
