@@ -36,5 +36,4 @@ interface TransactionDao {
 
     @Query("SELECT * FROM 'transaction' ORDER BY date DESC")
     fun getAllTransaction() : Flow<List<Transaction>>
-
 }

@@ -77,4 +77,6 @@ dependencies {
     // Encrypted Shared Preferences
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 
+    implementation ("org.apache.poi:poi:4.0.0")
+    implementation ("org.apache.poi:poi-ooxml:4.0.0")
 }
