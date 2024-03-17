@@ -1,9 +1,8 @@
 package com.example.bondoman.fragments
 
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,17 +42,15 @@ class SettingsFragment : Fragment() {
         }
         val sendButton = binding.sendButton
         sendButton.setOnClickListener {
-            sendEmail()
+            val sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            val userEmail = sharedPreferences.getString("email", "") // Default value is an empty string
+            viewModel.sendEmail(requireContext(), userEmail!!)
         }
 
         val downloadButton = binding.downloadButton
         downloadButton.setOnClickListener {
-            val success = viewModel.convertTransactionsToExcelFile("test")
-            if (success) {
-                Log.i("SETTING", "success")
-            } else {
-                Log.i("SETTING", "failed")
-            }
+            Toast.makeText(context, "Downloading file..", Toast.LENGTH_LONG).show()
+            viewModel.downloadTransaction()
         }
         return binding.root
     }
@@ -64,17 +61,4 @@ class SettingsFragment : Fragment() {
         _binding = null
     }
 
-    fun sendEmail() {
-        val mailIntent = Intent(Intent.ACTION_SEND)
-        mailIntent.data = Uri.parse("mailto:")
-        mailIntent.type = "text/plain"
-        mailIntent.putExtra(Intent.EXTRA_EMAIL, "13521120@std.stei.itb.ac.id")
-        mailIntent.putExtra(Intent.EXTRA_SUBJECT, "test")
-        mailIntent.putExtra(Intent.EXTRA_TEXT, "lorem ipsum")
-        try {
-            startActivity(Intent.createChooser(mailIntent, "Choose email intent..."))
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
-        }
-    }
 }

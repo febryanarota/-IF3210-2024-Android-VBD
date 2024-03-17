@@ -30,6 +30,11 @@ class LoginActivity : AppCompatActivity() {
                 TokenManager.init(this)
                 TokenManager.saveToken(token)
                 restartTokenValidationService()
+                val sharedPreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                val email = binding.emailEditText.text.toString()
+                editor.putString("email", email)
+                editor.apply()
                 navigateToMain(this)
             }
         })
