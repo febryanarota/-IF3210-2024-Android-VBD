@@ -1,20 +1,21 @@
 package com.example.bondoman.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ItemTransactionBinding
+import com.example.bondoman.fragments.AddTransactionFragment
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>, private val viewModel: TransactionViewModel)
+class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>, private val viewModel: TransactionViewModel, private val clickListener: TransactionClickListener)
     : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -27,13 +28,13 @@ class TransactionAdapter(private val context: Context, private val transactions:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val transactions = transactions[position]
-        holder.bind(transactions)
+        holder.bind(transactions, position)
     }
 
     override fun getItemCount() = transactions.size
 
     inner class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(transaction: Transaction) {
+        fun bind(transaction: Transaction, position: Int) {
             binding.tvName.text = transaction.place
             binding.tvDesc.text = transaction.category
             binding.tvPrice.text = transaction.price
@@ -41,15 +42,20 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.tvDate.text = formatDateToString(transaction.date)
             binding.bttnTrash.setOnClickListener {
                 viewModel.deleteTransaction(transaction)
+                notifyItemRemoved(position)
             }
-//            binding.bttnEdit.setOnClickListener {
-//                NavHostFragment.findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
-//            }
+            binding.bttnEdit.setOnClickListener {
+                clickListener.onEditTransaction(transaction)
+            }
         }
     }
 
     fun formatDateToString(date: Date): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(date)
+    }
+
+    interface TransactionClickListener {
+        fun onEditTransaction(transaction: Transaction)
     }
 }

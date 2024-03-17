@@ -28,9 +28,12 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     fun getAllTransaction() = transactionRepository.getAllTransactions().asLiveData(viewModelScope.coroutineContext)
 
-    fun addTransaction(title: String) = viewModelScope.launch {
-        val transactionObject = Transaction(place = title)
-        transactionRepository.insertTransaction(transactionObject)
+    fun addTransaction(transaction: Transaction) = viewModelScope.launch {
+        transactionRepository.insertTransaction(transaction)
+    }
+
+    fun addTransactions(transactions: MutableList<Transaction>) = viewModelScope.launch {
+        transactionRepository.insertTransactions(transactions)
     }
 
     fun deleteTransaction(transaction: Transaction) = viewModelScope.launch {
@@ -40,8 +43,9 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
     fun deleteAll() = viewModelScope.launch {
         transactionRepository.deleteAll()
     }
-    fun addTransactions(transactions: MutableList<Transaction>) = viewModelScope.launch {
-        transactionRepository.insertTransactions(transactions)
+
+    fun updateTransaction(transaction: Transaction) = viewModelScope.launch {
+        transactionRepository.updateTransaction(transaction)
     }
     //
 //    init {
@@ -71,7 +75,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         isRefreshingLiveData.value = true
         Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
-                addTransaction("Hiha")
+                addTransaction(Transaction(place = "Hiha"))
                 isRefreshingLiveData.value = false
             }
         },1_000)

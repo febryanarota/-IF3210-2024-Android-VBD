@@ -29,7 +29,10 @@ interface TransactionDao {
     suspend fun deleteTransaction(transaction: Transaction)
 
     @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateTransaction(transaction: List<Transaction>) : Int
+    suspend fun update(transaction: List<Transaction>) : Int
+
+    @Update
+    suspend fun updateTransaction(transaction: Transaction)
 
     @Query("SELECT * FROM 'transaction' ORDER BY date DESC")
     fun getAllTransaction() : Flow<List<Transaction>>
