@@ -20,7 +20,7 @@ import com.example.bondoman.viewmodels.ViewModelFactory
 
 
 private const val TAG = "TransactionFragment"
-class TransactionFragment : Fragment() {
+class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListener {
     private lateinit var viewModel: TransactionViewModel
 
     private var _binding: FragmentTransactionBinding? = null
@@ -53,7 +53,7 @@ class TransactionFragment : Fragment() {
         )).get(TransactionViewModel::class.java)
 
         val transactions = mutableListOf<Transaction>()
-        val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel)
+        val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel, this)
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
         viewModel.deleteAll()
@@ -82,6 +82,21 @@ class TransactionFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onEditTransaction(transaction: Transaction) {
+        val bundle = Bundle().apply {
+            putString("title", transaction.place)
+            putString("nominal", transaction.price)
+            putString("category", transaction.category)
+            putString("location", transaction.location)
+        }
+
+        val fragment = AddTransactionFragment().apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, fragment).commit()
     }
 
     override fun onDestroyView() {

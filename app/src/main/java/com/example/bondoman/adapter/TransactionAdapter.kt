@@ -1,20 +1,21 @@
 package com.example.bondoman.adapter
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ItemTransactionBinding
+import com.example.bondoman.fragments.AddTransactionFragment
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>, private val viewModel: TransactionViewModel)
+class TransactionAdapter(private val context: Context, private val transactions: List<Transaction>, private val viewModel: TransactionViewModel, private val clickListener: TransactionClickListener)
     : RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -42,14 +43,18 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.bttnTrash.setOnClickListener {
                 viewModel.deleteTransaction(transaction)
             }
-//            binding.bttnEdit.setOnClickListener {
-//                NavHostFragment.findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
-//            }
+            binding.bttnEdit.setOnClickListener {
+                clickListener.onEditTransaction(transaction)
+            }
         }
     }
 
     fun formatDateToString(date: Date): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(date)
+    }
+
+    interface TransactionClickListener {
+        fun onEditTransaction(transaction: Transaction)
     }
 }
