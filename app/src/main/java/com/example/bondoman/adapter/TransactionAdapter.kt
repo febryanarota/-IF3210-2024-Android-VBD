@@ -28,13 +28,13 @@ class TransactionAdapter(private val context: Context, private val transactions:
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val transactions = transactions[position]
-        holder.bind(transactions)
+        holder.bind(transactions, position)
     }
 
     override fun getItemCount() = transactions.size
 
     inner class ViewHolder(private val binding: ItemTransactionBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(transaction: Transaction) {
+        fun bind(transaction: Transaction, position: Int) {
             binding.tvName.text = transaction.place
             binding.tvDesc.text = transaction.category
             binding.tvPrice.text = transaction.price
@@ -42,6 +42,7 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.tvDate.text = formatDateToString(transaction.date)
             binding.bttnTrash.setOnClickListener {
                 viewModel.deleteTransaction(transaction)
+                notifyItemRemoved(position)
             }
             binding.bttnEdit.setOnClickListener {
                 clickListener.onEditTransaction(transaction)

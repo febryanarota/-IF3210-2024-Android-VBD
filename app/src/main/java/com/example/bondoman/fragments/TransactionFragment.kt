@@ -1,6 +1,7 @@
 package com.example.bondoman.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,18 +57,17 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel, this)
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.deleteAll()
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
             if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
                 transactions.clear()
                 transactions.addAll(transactionSnapshot)
+                transactionAdapter.notifyDataSetChanged()
             } else {
                 for (i in 1..5) {
-                    viewModel.addTransaction("Warteg")
+                    viewModel.addTransaction(Transaction(place = "Warteg"))
                 }
             }
-            transactionAdapter.notifyDataSetChanged()
         })
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
             binding.swipeContainer.isRefreshing = isRefreshing
@@ -86,6 +86,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
 
     override fun onEditTransaction(transaction: Transaction) {
         val bundle = Bundle().apply {
+            putString("id", transaction.id.toString())
             putString("title", transaction.place)
             putString("nominal", transaction.price)
             putString("category", transaction.category)
@@ -98,6 +99,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
 
         parentFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, fragment).commit()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
