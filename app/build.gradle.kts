@@ -77,6 +77,19 @@ dependencies {
     // Encrypted Shared Preferences
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
 
+    // cameraX
+    val cameraxVersion = "1.3.2"
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
+
     implementation ("org.apache.poi:poi:4.0.0")
     implementation ("org.apache.poi:poi-ooxml:4.0.0")
+}
+
+kapt {
+    correctErrorTypes = true
 }

@@ -16,4 +16,8 @@ object RetrofitInstance {
     val auth: Auth by lazy {
         retrofit.create(Auth::class.java)
     }
+
+    val bill: Bill by lazy {
+        retrofit.create(Bill::class.java)
+    }
 }
