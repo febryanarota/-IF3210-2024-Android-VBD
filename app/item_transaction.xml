@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="7dp"
-    android:background="@drawable/card_transaction"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/transaction_card"
     android:padding="8dp">
 
     <TextView
@@ -58,25 +59,39 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Date" />
 
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrice"
+        tools:text="Location" />
+
     <Button
         android:id="@+id/bttnEdit"
         style="@style/Widget.MaterialComponents.Button.IconOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="226dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
         app:icon="@drawable/edit"
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bttnTrash" />
+        app:layout_constraintStart_toEndOf="@+id/tvLocation" />
 
     <Button
         android:id="@+id/bttnTrash"
         style="@style/Widget.MaterialComponents.Button.IconOnly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="83dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
@@ -84,47 +99,8 @@
         app:iconTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bttnEdit"
         app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPrice">
-
-        <Button
-            android:id="@+id/bttnLocation"
-            style="@style/Widget.MaterialComponents.Button.IconOnly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
-            app:icon="@drawable/pin"
-            app:iconTint="@null" />
-
-        <TextView
-            android:id="@+id/tvLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            tools:text="Location" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
