@@ -20,6 +20,9 @@
         android:name="com.example.bondoman.fragments.ScanFragment"
         android:label="@string/title_scan"
         tools:layout="@layout/fragment_scan">
+        <action
+            android:id="@+id/action_navigation_scan_to_navigation_transaction"
+            app:destination="@+id/navigation_transaction" />
     </fragment>
 
     <fragment

@@ -24,12 +24,23 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.view.LifecycleCameraController
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.bondoman.R
+import com.example.bondoman.adapter.BillAdapter
 import com.example.bondoman.databinding.FragmentScanBinding
+import com.example.bondoman.models.BillList
 import com.example.bondoman.models.BillReq
 import com.example.bondoman.models.BillRes
+import com.example.bondoman.repositories.TransactionRepository
+import com.example.bondoman.room.database.TransactionDatabase
+import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.services.RetrofitInstance
 import com.example.bondoman.utils.PermissionUtils
+import com.example.bondoman.viewmodels.TransactionViewModel
+import com.example.bondoman.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -44,6 +55,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 import java.util.concurrent.Executors
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,6 +78,7 @@ class ScanFragment : Fragment() {
 
     private lateinit var camera: LifecycleCameraController
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
+    private var billList: BillList? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +86,7 @@ class ScanFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentScanBinding.inflate(inflater, container, false)
+        resetLayout()
         return _binding?.root
     }
 
@@ -117,6 +134,12 @@ class ScanFragment : Fragment() {
         }
         binding.galleryButton.setOnClickListener {
             onGalleryButtonClicked()
+        }
+        binding.doneButton.setOnClickListener {
+            onDoneButtonClicked()
+        }
+        binding.retakeButton.setOnClickListener {
+            onRetakeButtonClicked()
         }
     }
 
@@ -204,7 +227,19 @@ class ScanFragment : Fragment() {
                     call: Call<BillRes>,
                     response: Response<BillRes>
                 ) {
-                    // TODO show result
+                    if (response.isSuccessful && response.body() != null) {
+                        Log.d("scan", response.body()!!.items.items.toString())
+                        billList = response.body()!!.items
+                        val billAdapter = BillAdapter(requireContext(), billList!!)
+                        binding.itemsView.adapter = billAdapter
+                        binding.itemsView.layoutManager = LinearLayoutManager(requireContext())
+                        showItems()
+                    }
+                    else {
+                        Toast.makeText(requireContext(), "Upload failed, try again", Toast.LENGTH_SHORT).show()
+                        resetLayout()
+                    }
+
                 }
 
                 override fun onFailure(call: Call<BillRes>, t: Throwable) {
@@ -215,8 +250,80 @@ class ScanFragment : Fragment() {
         }
     }
 
+    private fun resetLayout() {
+        binding.previewView.visibility = View.VISIBLE
+        if (::camera.isInitialized) {
+            binding.previewView.controller = camera
+        }
+        binding.imageView.visibility = View.INVISIBLE
+        binding.itemsView.visibility = View.INVISIBLE
+
+        binding.captureButton.visibility = View.VISIBLE
+        binding.galleryButton.visibility = View.VISIBLE
+        binding.captureButton.isEnabled = true
+        binding.galleryButton.isEnabled = true
+
+        binding.retakeButton.visibility = View.GONE
+        binding.doneButton.visibility = View.GONE
+
+        binding.loadingPanel.visibility = View.GONE
+    }
+
+    private fun showItems() {
+        binding.previewView.visibility = View.INVISIBLE
+        binding.imageView.visibility = View.INVISIBLE
+        binding.itemsView.visibility = View.VISIBLE
+
+        binding.captureButton.visibility = View.GONE
+        binding.galleryButton.visibility = View.GONE
+
+        binding.retakeButton.visibility = View.VISIBLE
+        binding.doneButton.visibility = View.VISIBLE
+
+        binding.loadingPanel.visibility = View.GONE
+    }
+
     private fun onGalleryButtonClicked() {
         pickMedia.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+    }
+
+    private fun onDoneButtonClicked() {
+        // guard
+        if (billList == null) {
+            throw Exception("No Bill Available")
+        }
+
+        // calculate total price
+        lifecycleScope.launch(Dispatchers.Default) {
+            val totalPrice: Float = billList!!.items
+                .map { it -> it.price * it.qty }
+                .reduce { acc, price -> acc + price }
+
+            // insert new transaction
+            val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
+            format.apply {
+                maximumFractionDigits = 2
+                minimumFractionDigits = 2
+                isGroupingUsed = true
+            }
+
+            val newTransaction = Transaction(price = "IDR ${format.format(totalPrice)}", category = "Pembelian")
+            val viewModel = ViewModelProvider(this@ScanFragment, ViewModelFactory(
+                TransactionRepository(
+                    TransactionDatabase.getDatabaseInstance(requireContext()))
+            )
+            ).get(TransactionViewModel::class.java)
+
+            viewModel.addTransaction(newTransaction)
+        }
+
+        // notify and change fragment(?)
+        Toast.makeText(requireContext(), "Transaction added", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_navigation_scan_to_navigation_transaction)
+    }
+
+    private fun onRetakeButtonClicked() {
+        resetLayout()
     }
 
     companion object {

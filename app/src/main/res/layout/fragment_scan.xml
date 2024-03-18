@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScanFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/itemsView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/previewView"
+        app:layout_constraintEnd_toEndOf="@+id/previewView"
+        app:layout_constraintStart_toStartOf="@+id/previewView"
+        app:layout_constraintTop_toTopOf="@+id/previewView"
+        tools:layout_editor_absoluteX="23dp"
+        tools:layout_editor_absoluteY="91dp" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
@@ -31,7 +43,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/previewView" />
+        app:layout_constraintTop_toBottomOf="@+id/previewView"
+        tools:visibility="gone" />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
@@ -67,12 +80,13 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/gallery_picker"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/captureButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previewView"
-        android:contentDescription="@string/gallery_picker" />
+        tools:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
@@ -86,5 +100,33 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/retakeButton"
+        android:layout_width="153dp"
+        android:layout_height="44dp"
+        android:text="@string/retake"
+        android:fontFamily="@font/poppins"
+        android:textSize="16sp"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/P1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/doneButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/previewView" />
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="153dp"
+        android:layout_height="44dp"
+        android:text="@string/done"
+        android:fontFamily="@font/poppins"
+        android:textSize="16sp"
+        android:backgroundTint="@color/P1"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/retakeButton"
+        app:layout_constraintTop_toBottomOf="@+id/previewView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
