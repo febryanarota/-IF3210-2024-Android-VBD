@@ -59,6 +59,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
                 }
             }
         })
+
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
             binding.swipeContainer.isRefreshing = isRefreshing
         })
