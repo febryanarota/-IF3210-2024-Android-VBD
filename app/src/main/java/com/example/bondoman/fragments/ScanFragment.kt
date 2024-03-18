@@ -302,6 +302,7 @@ class ScanFragment : Fragment() {
             val transactionFactory = TransactionFactory(this@ScanFragment).apply {
                 applyToTransaction{
                     category = "Pembelian"
+                    place = "Scan Bill"
                 }
                 setPriceIDR(totalPrice)
             }
