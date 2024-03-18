@@ -12,14 +12,7 @@ import androidx.fragment.app.Fragment
 class PermissionUtils {
     companion object {
         fun requirePermissions(caller: Fragment, permissions: Array<String>, verbose: Boolean = false, operation: () -> Unit) {
-            if (permissions
-                .map { permission ->
-                    ContextCompat.checkSelfPermission(caller.requireContext(), permission) == PackageManager.PERMISSION_GRANTED
-                }
-                .reduce {
-                    cur, now -> cur && now
-                }
-            ) {
+            if (checkPermissions(caller, permissions)) {
                 operation()
             } else {
                 val requestPermissionLauncher =
@@ -35,6 +28,16 @@ class PermissionUtils {
                     }
                 requestPermissionLauncher.launch(permissions)
             }
+        }
+
+        fun checkPermissions(caller: Fragment, permissions: Array<String>): Boolean {
+            return permissions
+                .map { permission ->
+                    ContextCompat.checkSelfPermission(caller.requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+                }
+                .reduce {
+                        cur, now -> cur && now
+                }
         }
     }
 }
