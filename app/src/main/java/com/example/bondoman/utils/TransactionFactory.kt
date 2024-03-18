@@ -14,22 +14,29 @@ import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.util.Locale
 
+/*
+* Contoh penggunaan (TODO buat requirePermission yang bisa encapsulate sisanya):
+*
+val transactionFactory = TransactionFactory(this@ScanFragment).apply {
+    applyToTransaction{
+        category = "Pembelian"
+        place = "Scan Bill"
+    }
+    setPriceIDR(totalPrice)
+}
+
+locationRequest.requirePermissions(this@ScanFragment, LocationUtils.PERMISSIONS_REQUIRED)
+transactionFactory.setLocationAutomatic(this@ScanFragment)
+
+transactionFactory.doWhenReady { newTransaction: Transaction ->
+    viewModel.addTransaction(newTransaction)
+}
+*
+* */
 class TransactionFactory(private val owner: LifecycleOwner) {
     private var transaction: Transaction = Transaction()
     private var ready = MutableLiveData<Boolean>(true)
     private var action: ((transaction: Transaction) -> Unit)? = null
-    private var doAction = Observer<Boolean> {
-        if (it && action != null) {
-            action?.let { it1 -> it1(transaction) }
-            action = null
-        }
-    }
-
-//    init {
-//        owner.lifecycleScope.launch(Dispatchers.Main) {
-//            ready.observe(owner, doAction)
-//        }
-//    }
 
     // Edit transaction manually
     fun applyToTransaction(t: Transaction.() -> Unit) {
