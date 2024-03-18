@@ -1,5 +1,6 @@
 package com.example.bondoman.utils
 
+import android.location.Geocoder
 import android.location.Location
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -54,8 +55,23 @@ class TransactionFactory(private val owner: LifecycleOwner) {
 
         ready.postValue(false)
         LocationUtils.getLocation(caller) {location: Location ->
-            transaction.location = location.toString()
-            ready.postValue(true)
+            val geocoder = Geocoder(caller.requireContext(), Locale.getDefault())
+            caller.lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val addressList = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                    if (!addressList.isNullOrEmpty()) {
+                        val addressStringBuilder = StringBuilder()
+                        for (i in 0..addressList[0].maxAddressLineIndex) {
+                            addressStringBuilder.append(addressList[0].getAddressLine(i)).append("\n")
+                        }
+                        transaction.location = addressStringBuilder.toString()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                ready.postValue(true)
+            }
+
         }
     }
 
