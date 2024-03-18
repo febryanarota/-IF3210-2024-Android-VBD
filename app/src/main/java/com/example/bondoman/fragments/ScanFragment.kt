@@ -307,7 +307,7 @@ class ScanFragment : Fragment() {
                 isGroupingUsed = true
             }
 
-            val newTransaction = Transaction(price = "IDR ${format.format(totalPrice)}", category = "Pembelian")
+            val newTransaction = Transaction(price = "${format.format(totalPrice)}", category = "Pembelian")
             val viewModel = ViewModelProvider(this@ScanFragment, ViewModelFactory(
                 TransactionRepository(
                     TransactionDatabase.getDatabaseInstance(requireContext()))
