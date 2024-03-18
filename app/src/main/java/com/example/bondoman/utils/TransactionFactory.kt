@@ -25,7 +25,7 @@ class TransactionFactory(owner: LifecycleOwner) {
     }
 
     // Edit transaction manually
-    fun apply(t: Transaction.() -> Unit) {
+    fun applyToTransaction(t: Transaction.() -> Unit) {
         transaction.apply(t)
     }
 
