@@ -20,4 +20,5 @@
     <string name="logoutButton">Logout</string>
     <string name="title_scan">Scan</string>
     <string name="save">Save</string>
+    <string name="select">Pilih Kategori</string>
 </resources>

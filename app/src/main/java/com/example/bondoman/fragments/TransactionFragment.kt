@@ -1,5 +1,7 @@
 package com.example.bondoman.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,18 +35,6 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
-//
-//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-//        return root
-
 
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
 
@@ -93,13 +83,15 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
             putString("location", transaction.location)
         }
 
-        val fragment = AddTransactionFragment().apply {
-            arguments = bundle
-        }
-
         findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction, bundle)
     }
 
+    override fun onLocationClicked(transaction: Transaction) {
+        // temp
+        val mapURI = Uri.parse("https://maps.google.com/maps/search/${transaction.location}")
+        val intent = Intent(Intent.ACTION_VIEW, mapURI)
+        startActivity(intent)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
