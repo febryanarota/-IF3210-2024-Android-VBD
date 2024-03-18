@@ -19,6 +19,7 @@
         <item name="colorContainer">@color/black</item>
         <item name="textFillColor">@color/white</item>
         <item name="fontFamily">@font/poppins</item>
+        <item name="android:textColorPrimary">#ffffff</item>
     </style>
 
     <style name="Widget.MaterialComponents.Button.IconOnly">
