@@ -33,7 +33,11 @@ class TransactionAdapter(private val context: Context, private val transactions:
         fun bind(transaction: Transaction, position: Int) {
             binding.tvName.text = transaction.place
             binding.tvDesc.text = transaction.category
-            binding.tvPrice.text = transaction.price
+            var price = "- IDR " + transaction.price
+            if (transaction.category == "Pemasukan") {
+                price = "+ IDR " + transaction.price
+            }
+            binding.tvPrice.text = price
             binding.tvLocation.text = transaction.location
             binding.tvDate.text = formatDateToString(transaction.date)
             binding.bttnTrash.setOnClickListener {
