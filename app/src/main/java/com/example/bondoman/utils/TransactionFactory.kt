@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.models.Transaction
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.util.Locale
 
@@ -21,7 +24,9 @@ class TransactionFactory(owner: LifecycleOwner) {
     }
 
     init {
-        ready.observe(owner, doAction)
+        owner.lifecycleScope.launch(Dispatchers.Main) {
+            ready.observe(owner, doAction)
+        }
     }
 
     // Edit transaction manually
@@ -30,20 +35,22 @@ class TransactionFactory(owner: LifecycleOwner) {
     }
 
     // Edit price string with format IDR X.XXX.XXX,XX
-    fun setPrice(price: Float) {
+    fun setPriceIDR(price: Float) {
         val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
         format.apply {
             maximumFractionDigits = 2
             minimumFractionDigits = 2
             isGroupingUsed = true
         }
-        transaction.price = format.format(price)
+        transaction.price = "IDR ${format.format(price)}"
     }
 
     // Edit location with current location, if possible
     fun setLocationAutomatic(caller: Fragment) {
+        ready.value = false
         LocationUtils.getLocation(caller) {location: Location ->
             transaction.location = location.toString()
+            ready.value = true
         }
     }
 
@@ -53,6 +60,10 @@ class TransactionFactory(owner: LifecycleOwner) {
             action(transaction)
             this.action = null
         }
+    }
+
+    fun build(): Transaction {
+        return transaction
     }
 
 

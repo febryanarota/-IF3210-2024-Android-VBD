@@ -4,12 +4,10 @@ import TokenManager
 import android.Manifest
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.media.AudioManager
 import android.media.MediaActionSound
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,33 +30,23 @@ import com.example.bondoman.R
 import com.example.bondoman.adapter.BillAdapter
 import com.example.bondoman.databinding.FragmentScanBinding
 import com.example.bondoman.models.BillList
-import com.example.bondoman.models.BillReq
 import com.example.bondoman.models.BillRes
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
-import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.services.RetrofitInstance
 import com.example.bondoman.utils.PermissionUtils
+import com.example.bondoman.utils.TransactionFactory
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.util.Currency
-import java.util.Locale
 import java.util.concurrent.Executors
 
 // TODO: Rename parameter arguments, choose names that match
@@ -299,20 +287,18 @@ class ScanFragment : Fragment() {
                 .map { it -> it.price * it.qty }
                 .reduce { acc, price -> acc + price }
 
-            // insert new transaction
-            val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
-            format.apply {
-                maximumFractionDigits = 2
-                minimumFractionDigits = 2
-                isGroupingUsed = true
-            }
-
-            val newTransaction = Transaction(price = "IDR ${format.format(totalPrice)}", category = "Pembelian")
             val viewModel = ViewModelProvider(this@ScanFragment, ViewModelFactory(
                 TransactionRepository(
                     TransactionDatabase.getDatabaseInstance(requireContext()))
             )
             ).get(TransactionViewModel::class.java)
+
+            val newTransaction = TransactionFactory(this@ScanFragment).apply {
+                applyToTransaction{
+                    category = "Pembelian"
+                }
+                setPriceIDR(totalPrice)
+            }.build()
 
             viewModel.addTransaction(newTransaction)
         }
