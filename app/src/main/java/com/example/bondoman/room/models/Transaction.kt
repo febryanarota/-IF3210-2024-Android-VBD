@@ -9,7 +9,7 @@ data class Transaction(
     @PrimaryKey(autoGenerate = true) var id: Long = 0,
     var place: String = "",
     var category: String = "Pembelian",
-    var price: String = "IDR 15.000",
+    var price: String = "15.000",
     var date: Date = Date(),
     var location: String = "Ganyang",
 )

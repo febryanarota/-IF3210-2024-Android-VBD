@@ -45,19 +45,22 @@
                     android:id="@+id/transactionNominal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nominal" />
+                    android:hint="Nominal"
+                    android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:hint="@string/select"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/transactionCategory"
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Kategori" />
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +76,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/message"
+                android:id="@+id/errorMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
