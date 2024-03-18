@@ -33,7 +33,9 @@ import com.example.bondoman.models.BillList
 import com.example.bondoman.models.BillRes
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
+import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.services.RetrofitInstance
+import com.example.bondoman.utils.LocationUtils
 import com.example.bondoman.utils.PermissionUtils
 import com.example.bondoman.utils.TransactionFactory
 import com.example.bondoman.viewmodels.TransactionViewModel
@@ -67,6 +69,7 @@ class ScanFragment : Fragment() {
     private lateinit var camera: LifecycleCameraController
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private var billList: BillList? = null
+    private lateinit var locationRequest: PermissionUtils
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,6 +91,9 @@ class ScanFragment : Fragment() {
             camera.cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             binding.previewView.controller = camera
         }
+
+        // Initialize location request helper
+        locationRequest = PermissionUtils(this, {}, {})
 
         // Initialize pickMedia
         pickMedia = registerForActivityResult(PickVisualMedia()) {
@@ -293,14 +299,21 @@ class ScanFragment : Fragment() {
             )
             ).get(TransactionViewModel::class.java)
 
-            val newTransaction = TransactionFactory(this@ScanFragment).apply {
+            val transactionFactory = TransactionFactory(this@ScanFragment).apply {
                 applyToTransaction{
                     category = "Pembelian"
                 }
                 setPriceIDR(totalPrice)
-            }.build()
+            }
 
-            viewModel.addTransaction(newTransaction)
+            locationRequest.requirePermissions(this@ScanFragment, LocationUtils.PERMISSIONS_REQUIRED)
+            if (LocationUtils.checkPermission(this@ScanFragment)) {
+                transactionFactory.setLocationAutomatic(this@ScanFragment)
+            }
+
+            transactionFactory.doWhenReady { newTransaction: Transaction ->
+                viewModel.addTransaction(newTransaction)
+            }
         }
 
         // notify and change fragment(?)

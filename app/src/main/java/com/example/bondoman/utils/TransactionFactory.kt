@@ -9,25 +9,26 @@ import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.room.models.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.util.Locale
 
-class TransactionFactory(owner: LifecycleOwner) {
+class TransactionFactory(private val owner: LifecycleOwner) {
     private var transaction: Transaction = Transaction()
     private var ready = MutableLiveData<Boolean>(true)
     private var action: ((transaction: Transaction) -> Unit)? = null
-    private val doAction = Observer<Boolean> {
-        if (it) {
+    private var doAction = Observer<Boolean> {
+        if (it && action != null) {
             action?.let { it1 -> it1(transaction) }
             action = null
         }
     }
 
-    init {
-        owner.lifecycleScope.launch(Dispatchers.Main) {
-            ready.observe(owner, doAction)
-        }
-    }
+//    init {
+//        owner.lifecycleScope.launch(Dispatchers.Main) {
+//            ready.observe(owner, doAction)
+//        }
+//    }
 
     // Edit transaction manually
     fun applyToTransaction(t: Transaction.() -> Unit) {
@@ -46,19 +47,32 @@ class TransactionFactory(owner: LifecycleOwner) {
     }
 
     // Edit location with current location, if possible
-    fun setLocationAutomatic(caller: Fragment) {
-        ready.value = false
+    suspend fun setLocationAutomatic(caller: Fragment) {
+        if (!LocationUtils.checkPermission(caller)) {
+            return
+        }
+
+        ready.postValue(false)
         LocationUtils.getLocation(caller) {location: Location ->
             transaction.location = location.toString()
-            ready.value = true
+            ready.postValue(true)
         }
     }
 
-    fun doWhenReady(action: ((transaction: Transaction) -> Unit)) {
+    suspend fun doWhenReady(action: ((transaction: Transaction) -> Unit)) {
         this.action = action
         if (ready.value == true) {
             action(transaction)
             this.action = null
+        } else {
+            withContext(Dispatchers.Main) {
+                ready.observe(owner) {
+                    if (it) {
+                        action(transaction)
+                    }
+                }
+            }
+
         }
     }
 
