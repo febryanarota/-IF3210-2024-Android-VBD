@@ -55,10 +55,11 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
                 transactionAdapter.notifyDataSetChanged()
             } else {
                 for (i in 1..5) {
-                    viewModel.addTransaction(Transaction(place = "Warteg"))
+                    viewModel.addTransaction(Transaction(place = "Warteg", category = "Pembelian", location = "Ganyang", price = "15.000"))
                 }
             }
         })
+
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
             binding.swipeContainer.isRefreshing = isRefreshing
         })

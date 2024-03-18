@@ -58,7 +58,6 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
         isRefreshingLiveData.value = true
         Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
             override fun run() {
-                addTransaction(Transaction(place = "Hiha"))
                 isRefreshingLiveData.value = false
             }
         },1_000)

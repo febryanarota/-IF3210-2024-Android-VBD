@@ -12,6 +12,10 @@
         android:title="@string/title_scan" />
 
     <item
+        android:id="@+id/navigation_graph"
+        android:icon="@drawable/chart"
+        android:title="@string/title_graph" />
+    <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/setting_alt_line"
         android:title="@string/title_settings" />

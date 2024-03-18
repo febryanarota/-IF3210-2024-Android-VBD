@@ -16,7 +16,6 @@ import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
-import java.lang.Long
 
 class AddTransactionFragment() : Fragment() {
     private lateinit var viewModel: TransactionViewModel
@@ -66,7 +65,7 @@ class AddTransactionFragment() : Fragment() {
             val location = binding.transactionLocation.text.toString()
             if (isDataValid(title, nominal, category, location)) {
                 if (idData != null) {
-                    val updatedTransaction = Transaction(id = Long.parseLong(idData), place = title, price = nominal, category = category, location = location)
+                    val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = nominal, category = category, location = location)
                     viewModel.updateTransaction(updatedTransaction)
                 } else {
                     val newTransaction = Transaction(place = title, price = nominal, category = category, location = location)
