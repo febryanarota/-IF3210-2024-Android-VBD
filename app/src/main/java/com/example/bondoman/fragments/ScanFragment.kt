@@ -69,7 +69,6 @@ class ScanFragment : Fragment() {
     private lateinit var camera: LifecycleCameraController
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private var billList: BillList? = null
-    private lateinit var locationRequest: PermissionUtils
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,9 +90,6 @@ class ScanFragment : Fragment() {
             camera.cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             binding.previewView.controller = camera
         }
-
-        // Initialize location request helper
-        locationRequest = PermissionUtils(this, {}, {})
 
         // Initialize pickMedia
         pickMedia = registerForActivityResult(PickVisualMedia()) {
@@ -306,11 +302,13 @@ class ScanFragment : Fragment() {
                 }
                 setPriceIDR(totalPrice)
             }
-
-            locationRequest.requirePermissions(this@ScanFragment, LocationUtils.PERMISSIONS_REQUIRED)
-            if (LocationUtils.checkPermission(this@ScanFragment)) {
+            try {
                 transactionFactory.setLocationAutomatic(this@ScanFragment)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // TODO set location manually or do nothing
             }
+
 
             transactionFactory.doWhenReady { newTransaction: Transaction ->
                 viewModel.addTransaction(newTransaction)

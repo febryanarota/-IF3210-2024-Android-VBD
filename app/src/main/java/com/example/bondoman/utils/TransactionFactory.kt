@@ -55,33 +55,16 @@ class TransactionFactory(private val owner: LifecycleOwner) {
     }
 
     // Edit location with current location, if possible
-    suspend fun setLocationAutomatic(caller: Fragment) {
-        if (!LocationUtils.checkPermission(caller)) {
-            return
-        }
-
-        ready.postValue(false)
-        LocationUtils.getLocation(caller) {location: Location ->
-            val geocoder = Geocoder(caller.requireContext(), Locale.getDefault())
-            caller.lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val addressList = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    if (!addressList.isNullOrEmpty()) {
-                        val addressStringBuilder = StringBuilder()
-                        for (i in 0..addressList[0].maxAddressLineIndex) {
-                            addressStringBuilder.append(addressList[0].getAddressLine(i)).append("\n")
-                        }
-                        transaction.location = addressStringBuilder.toString()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                ready.postValue(true)
-            }
-
-        }
+    @Throws(NullPointerException::class)
+    fun setLocationAutomatic(caller: Fragment) {
+        transaction.location = LocationUtils.locationString
     }
 
+    fun setLocationWithMaps(caller: Fragment) {
+
+    }
+
+    // use this function if there is blocking function used in factory
     suspend fun doWhenReady(action: ((transaction: Transaction) -> Unit)) {
         this.action = action
         if (ready.value == true) {
