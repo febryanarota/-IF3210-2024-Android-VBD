@@ -1,9 +1,10 @@
 package com.example.bondoman.fragments
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bondoman.R
 import com.example.bondoman.adapter.TransactionAdapter
+import com.example.bondoman.databinding.BottomSheetLayoutBinding
 import com.example.bondoman.databinding.FragmentTransactionBinding
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
@@ -25,6 +27,8 @@ import com.example.bondoman.viewmodels.ViewModelFactory
 private const val TAG = "TransactionFragment"
 class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListener {
     private lateinit var viewModel: TransactionViewModel
+    private lateinit var dialog: Dialog
+    private lateinit var bottomSheetLayoutBinding: BottomSheetLayoutBinding
 
     private var _binding: FragmentTransactionBinding? = null
 
@@ -37,11 +41,14 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
     ): View {
 
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
+        bottomSheetLayoutBinding = BottomSheetLayoutBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this, ViewModelFactory(
             TransactionRepository(
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
+
+        dialog = Dialog(requireContext())
 
         val transactions = mutableListOf<Transaction>()
         val transactionAdapter = TransactionAdapter(requireContext(), transactions, viewModel, this)
@@ -72,6 +79,14 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
             findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction)
         }
 
+        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
+        dialog.setContentView(bottomSheetLayoutBinding.root)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        bottomSheetLayoutBinding.bttnCancel.setBackgroundColor(Color.TRANSPARENT)
+
+
         return binding.root
     }
 
@@ -92,6 +107,17 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         val mapURI = Uri.parse("https://maps.google.com/maps/search/${transaction.location}")
         val intent = Intent(Intent.ACTION_VIEW, mapURI)
         startActivity(intent)
+    }
+
+    override fun onDeleteClicked(transaction: Transaction) {
+        dialog.show()
+        bottomSheetLayoutBinding.bttnDelete.setOnClickListener {
+            viewModel.deleteTransaction(transaction)
+            dialog.dismiss()
+        }
+        bottomSheetLayoutBinding.bttnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
     override fun onDestroyView() {
