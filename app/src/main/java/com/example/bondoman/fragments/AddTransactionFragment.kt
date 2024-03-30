@@ -1,7 +1,7 @@
 package com.example.bondoman.fragments
 
-import android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,6 @@ class AddTransactionFragment() : Fragment() {
 
     private var _binding: FragmetAddTransactionBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,9 +66,11 @@ class AddTransactionFragment() : Fragment() {
                 if (idData != null) {
                     val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = nominal, category = category, location = location)
                     viewModel.updateTransaction(updatedTransaction)
+                    Log.i("UPDATE TRANSACTION", "Transaction updated!")
                 } else {
                     val newTransaction = Transaction(place = title, price = nominal, category = category, location = location)
                     viewModel.addTransaction(newTransaction)
+                    Log.i("ADD TRANSACTION", "Transaction added!")
                 }
                 findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
             } else {

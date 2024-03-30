@@ -47,23 +47,4 @@
             app:cornerRadius="20dp" />
     </LinearLayout>
 
-
-    <!--    <Button-->
-    <!--        android:id="@+id/bttnDelete"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Delete"-->
-    <!--        android:textStyle="bold" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/bttnCancel"-->
-    <!--        android:layout_marginTop="10dp"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:textColor="?colorPrimary"-->
-    <!--        android:textStyle="bold"-->
-    <!--        android:background="?color"-->
-    <!--        android:text="Cancel" />-->
-
-
 </LinearLayout>
