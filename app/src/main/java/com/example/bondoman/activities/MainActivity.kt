@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -15,14 +13,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityMainBinding
-import com.example.bondoman.fragments.AddTransactionFragment
+import com.example.bondoman.utils.LocationUtils
 import com.example.bondoman.fragments.SettingsFragment
 import com.example.bondoman.utils.TokenValidationService
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-//    private val random = AddTransactionFragment().getRandomizeReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +44,11 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
+        // Start tracking location, if given permission
+        LocationUtils.startTracking(this)
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_transaction, R.id.navigation_scan, R.id.navigation_graph, R.id.navigation_settings

@@ -38,7 +38,9 @@ import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.services.RetrofitInstance
+import com.example.bondoman.utils.LocationUtils
 import com.example.bondoman.utils.PermissionUtils
+import com.example.bondoman.utils.TransactionFactory
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -314,7 +316,24 @@ class ScanFragment : Fragment() {
             )
             ).get(TransactionViewModel::class.java)
 
-            viewModel.addTransaction(newTransaction)
+            val transactionFactory = TransactionFactory(this@ScanFragment).apply {
+                applyToTransaction{
+                    category = "Pembelian"
+                    place = "Scan Bill"
+                }
+                setPriceIDR(totalPrice)
+            }
+            try {
+                transactionFactory.setLocationAutomatic(this@ScanFragment)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // TODO set location manually or do nothing
+            }
+
+
+            transactionFactory.doWhenReady { newTransaction: Transaction ->
+                viewModel.addTransaction(newTransaction)
+            }
         }
 
         // notify and change fragment(?)
