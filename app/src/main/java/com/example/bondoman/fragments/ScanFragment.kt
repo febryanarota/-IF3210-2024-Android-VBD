@@ -330,7 +330,6 @@ class ScanFragment : Fragment() {
                 // TODO set location manually or do nothing
             }
 
-
             transactionFactory.doWhenReady { newTransaction: Transaction ->
                 viewModel.addTransaction(newTransaction)
             }

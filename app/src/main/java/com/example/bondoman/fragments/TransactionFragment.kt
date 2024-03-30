@@ -61,9 +61,9 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
                 transactions.addAll(transactionSnapshot)
                 transactionAdapter.notifyDataSetChanged()
             } else {
-                for (i in 1..5) {
-                    viewModel.addTransaction(Transaction(place = "Warteg", category = "Pembelian", location = "Ganyang", price = "15000"))
-                }
+//                for (i in 1..5) {
+//                    viewModel.addTransaction(Transaction(place = "Warteg", category = "Pembelian", location = "Ganyang", price = "15000"))
+//                }
             }
         })
 
@@ -84,7 +84,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        bottomSheetLayoutBinding.bttnCancel.setBackgroundColor(Color.TRANSPARENT)
+        bottomSheetLayoutBinding.bttnCancel.setBackgroundColor(Color.WHITE)
 
 
         return binding.root

@@ -15,6 +15,8 @@ import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
+import java.text.DecimalFormat
+import java.util.Locale
 
 class AddTransactionFragment() : Fragment() {
     private lateinit var viewModel: TransactionViewModel
@@ -60,15 +62,16 @@ class AddTransactionFragment() : Fragment() {
         binding.bttnSave.setOnClickListener {
             val title = binding.transactionTitle.text.toString()
             val nominal = binding.transactionNominal.text.toString()
+            val nominalFloat = binding.transactionNominal.text.toString().toFloat()
             val category = binding.autoCompleteText.text.toString()
             val location = binding.transactionLocation.text.toString()
 
             if (isDataValid(title, nominal, category, location)) {
                 if (idData != null && idData != "") {
-                    val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = nominal, category = category, location = location)
+                    val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = setPriceIDR(nominalFloat), category = category, location = location)
                     viewModel.updateTransaction(updatedTransaction)
                 } else {
-                    val newTransaction = Transaction(place = title, price = nominal, category = category, location = location)
+                    val newTransaction = Transaction(place = title, price = setPriceIDR(nominalFloat), category = category, location = location)
                     viewModel.addTransaction(newTransaction)
                 }
                 findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
@@ -85,6 +88,16 @@ class AddTransactionFragment() : Fragment() {
         } else {
             false
         }
+    }
+
+    fun setPriceIDR(price: Float): String {
+        val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
+        format.apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+            isGroupingUsed = true
+        }
+        return "${format.format(price)}"
     }
 
     override fun onDestroyView() {
