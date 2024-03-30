@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,9 @@ import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
+import java.text.DecimalFormat
+import java.util.Locale
+import kotlin.math.log
 
 private const val TAG = "TransactionFragment"
 class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListener {
@@ -54,10 +58,26 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
+        var balance = 0f
+        var pembelianTotal = 0f
+        var pemasukanTotal = 0f
+
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
             if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
                 transactions.clear()
                 transactions.addAll(transactionSnapshot)
+                for (transaction in transactions) {
+                    if (transaction.category == "Pembelian") {
+                        pembelianTotal += setPriceBack(transaction.price)
+                        Log.i("PEMBELIAN", setPriceBack(transaction.price).toString() + " " + transaction.category)
+                    } else if (transaction.category == "Pemasukan") {
+                        pemasukanTotal += setPriceBack(transaction.price)
+                    }
+                }
+                Log.i(TAG, "PembelianTotal: $pembelianTotal")
+                balance = pembelianTotal - pemasukanTotal
+                val balanceString = setPriceIDR(balance)
+                binding.textIDR.text = balanceString
                 transactionAdapter.notifyDataSetChanged()
             } else {
 //                for (i in 1..5) {
@@ -65,6 +85,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
 //                }
             }
         })
+
 
         viewModel.getIsRefreshingData().observe(viewLifecycleOwner, Observer {isRefreshing ->
             binding.swipeContainer.isRefreshing = isRefreshing
@@ -117,6 +138,27 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         bottomSheetLayoutBinding.bttnCancel.setOnClickListener {
             dialog.dismiss()
         }
+    }
+
+    private fun setPriceBack(price: String): Float {
+        val format = DecimalFormat.getInstance(Locale("id", "ID"))
+        format.apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+            isGroupingUsed = true
+        }
+        val price = format.parse(price)
+        return price.toFloat()
+    }
+
+    private fun setPriceIDR(price: Float): String {
+        val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
+        format.apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+            isGroupingUsed = true
+        }
+        return "IDR ${format.format(price)}"
     }
 
     override fun onDestroyView() {
