@@ -289,6 +289,15 @@ class ScanFragment : Fragment() {
                 .map { it -> it.price * it.qty }
                 .reduce { acc, price -> acc + price }
 
+            // insert new transaction
+            val format = DecimalFormat.getNumberInstance(Locale("id", "ID"))
+            format.apply {
+                maximumFractionDigits = 2
+                minimumFractionDigits = 2
+                isGroupingUsed = true
+            }
+
+            val newTransaction = Transaction(price = "${format.format(totalPrice)}", category = "Pembelian")
             val viewModel = ViewModelProvider(this@ScanFragment, ViewModelFactory(
                 TransactionRepository(
                     TransactionDatabase.getDatabaseInstance(requireContext()))

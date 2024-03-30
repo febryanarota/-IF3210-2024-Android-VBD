@@ -14,7 +14,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -86,8 +85,11 @@ dependencies {
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
 
-    implementation ("org.apache.poi:poi:4.0.0")
-    implementation ("org.apache.poi:poi-ooxml:4.0.0")
+    implementation("org.apache.poi:poi:4.0.0")
+    implementation("org.apache.poi:poi-ooxml:4.0.0")
+
+    // Pie Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
 
 kapt {

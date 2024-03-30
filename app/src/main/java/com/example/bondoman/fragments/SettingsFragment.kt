@@ -33,7 +33,6 @@ class SettingsFragment : Fragment() {
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )).get(TransactionViewModel::class.java)
 
-
         binding.logoutButton.setOnClickListener {
             TokenManager.removeToken()
             val intent = Intent(activity, LoginActivity::class.java)
@@ -55,10 +54,8 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
