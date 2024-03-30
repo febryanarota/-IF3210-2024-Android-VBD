@@ -1,5 +1,7 @@
 package com.example.bondoman.fragments
 
+import java.text.DecimalFormat
+import java.util.Locale
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -54,15 +56,24 @@ class GraphFragment : Fragment() {
             transactions.clear()
             transactions.addAll(transactionSnapshot)
             for (transaction in transactions) {
-                Log.i("GRAPH FRAGMENT", transaction.price + " " + transaction.category)
+                Log.i("GRAPH FRAGMENT", setPriceBack(transaction.price).toString() + " " + transaction.category)
             }
             dataListing(transactions)
         })
-
-
-
         return root
     }
+
+    private fun setPriceBack(price: String): Float {
+        val format = DecimalFormat.getInstance(Locale("id", "ID"))
+        format.apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+            isGroupingUsed = true
+        }
+        val price = format.parse(price)
+        return price.toFloat()
+    }
+
 
     fun dataListing(transactions: MutableList<Transaction>) {
         var pembelianTotal = 0f
@@ -70,9 +81,9 @@ class GraphFragment : Fragment() {
 
         for (transaction in transactions) {
             if (transaction.category == "Pembelian") {
-                pembelianTotal += transaction.price.toFloatOrNull() ?: 0f
+                pembelianTotal += setPriceBack(transaction.price) ?: 0f
             } else if (transaction.category == "Pemasukan") {
-                pemasukanTotal += transaction.price.toFloatOrNull() ?: 0f
+                pemasukanTotal += setPriceBack(transaction.price) ?: 0f
             }
         }
 
@@ -119,9 +130,9 @@ class GraphFragment : Fragment() {
                     colors.add(Color.parseColor("#FF4198D7"))
                     colors.add(Color.parseColor("#FF99D1FB"))
                 } else -> {
-                    colors.add(Color.parseColor("#7A4198D7"))
-                    colors.add(Color.parseColor("#454198D7"))
-                }
+                colors.add(Color.parseColor("#7A4198D7"))
+                colors.add(Color.parseColor("#454198D7"))
+            }
             }
 
             pieDataSetter.setColors(colors)
@@ -192,3 +203,5 @@ class GraphFragment : Fragment() {
         _binding = null
     }
 }
+
+
