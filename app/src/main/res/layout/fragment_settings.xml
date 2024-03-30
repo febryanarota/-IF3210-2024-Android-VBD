@@ -32,7 +32,8 @@
             android:text="@string/download_button"
             android:textAlignment="textStart"
             android:textColor="@color/white"
-            app:icon="@drawable/resource_import" />
+            app:icon="@drawable/resource_import"
+            app:cornerRadius="20dp"/>
 
         <Button
             android:id="@+id/sendButton"
@@ -43,7 +44,8 @@
             android:text="@string/send_button"
             android:textAlignment="textStart"
             android:textColor="@color/white"
-            app:icon="@drawable/send" />
+            app:icon="@drawable/send"
+            app:cornerRadius="20dp"/>
 
         <Button
             android:id="@+id/randomizeButton"
@@ -55,7 +57,8 @@
             android:textAlignment="textStart"
 
             android:textColor="@color/white"
-            app:icon="@drawable/sort_random" />
+            app:icon="@drawable/sort_random"
+            app:cornerRadius="20dp"/>
     </LinearLayout>
 
     <Button
@@ -66,6 +69,8 @@
         android:includeFontPadding="false"
         android:paddingHorizontal="40dp"
         android:text="@string/logoutButton"
+        android:background="@drawable/button_transparent"
+        android:textColor="?colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />

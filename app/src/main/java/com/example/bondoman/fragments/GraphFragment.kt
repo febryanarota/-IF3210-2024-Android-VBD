@@ -74,7 +74,6 @@ class GraphFragment : Fragment() {
         return price.toFloat()
     }
 
-
     fun dataListing(transactions: MutableList<Transaction>) {
         var pembelianTotal = 0f
         var pemasukanTotal = 0f
@@ -196,7 +195,6 @@ class GraphFragment : Fragment() {
 
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

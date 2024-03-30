@@ -23,7 +23,6 @@ import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
 
-
 private const val TAG = "TransactionFragment"
 class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListener {
     private lateinit var viewModel: TransactionViewModel
@@ -84,8 +83,8 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+//        bottomSheetLayoutBinding.bttnCancel.setBackgroundResource(R.drawable.button_transparent)
         bottomSheetLayoutBinding.bttnCancel.setBackgroundColor(Color.WHITE)
-
 
         return binding.root
     }
