@@ -24,19 +24,10 @@
                 android:paddingVertical="10dp"
                 android:paddingLeft="10dp">
 
-<!--                <TextView-->
-<!--                    android:id="@+id/textCash"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="8dp"-->
-<!--                    android:text="BondoManCash"-->
-<!--                    android:textColor="?textFillColor" />-->
-
                 <TextView
                     android:id="@+id/textBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:text="Balance"
                     android:textColor="?textFillColor"/>
 
@@ -44,7 +35,6 @@
                     android:id="@+id/textIDR"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:text="IDR 0"
                     android:textSize="20sp"
                     android:textStyle="bold"
