@@ -1,14 +1,10 @@
 package com.example.bondoman.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bondoman.R
 import com.example.bondoman.databinding.ItemTransactionBinding
-import com.example.bondoman.fragments.AddTransactionFragment
 import com.example.bondoman.room.models.Transaction
 import com.example.bondoman.viewmodels.TransactionViewModel
 import java.text.SimpleDateFormat
@@ -37,15 +33,23 @@ class TransactionAdapter(private val context: Context, private val transactions:
         fun bind(transaction: Transaction, position: Int) {
             binding.tvName.text = transaction.place
             binding.tvDesc.text = transaction.category
-            binding.tvPrice.text = transaction.price
+            var price = "- IDR " + transaction.price
+            if (transaction.category == "Pemasukan") {
+                price = "+ IDR " + transaction.price
+            }
+            binding.tvPrice.text = price
             binding.tvLocation.text = transaction.location
             binding.tvDate.text = formatDateToString(transaction.date)
             binding.bttnTrash.setOnClickListener {
-                viewModel.deleteTransaction(transaction)
-                notifyItemRemoved(position)
+                clickListener.onDeleteClicked(transaction)
+//                viewModel.deleteTransaction(transaction)
+//                notifyItemRemoved(position)
             }
             binding.bttnEdit.setOnClickListener {
                 clickListener.onEditTransaction(transaction)
+            }
+            binding.bttnLocation.setOnClickListener {
+                clickListener.onLocationClicked(transaction)
             }
         }
     }
@@ -57,5 +61,7 @@ class TransactionAdapter(private val context: Context, private val transactions:
 
     interface TransactionClickListener {
         fun onEditTransaction(transaction: Transaction)
+        fun onLocationClicked(transaction: Transaction)
+        fun onDeleteClicked(transaction: Transaction)
     }
 }

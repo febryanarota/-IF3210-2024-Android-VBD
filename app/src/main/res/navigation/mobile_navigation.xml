@@ -26,10 +26,21 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_settings"
         android:name="com.example.bondoman.fragments.SettingsFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_add_transaction"
+            app:destination="@id/add_transaction" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_graph"
+        android:name="com.example.bondoman.fragments.GraphFragment"
+        android:label="@string/title_graph"
+        tools:layout="@layout/fragment_graph" >
+    </fragment>
 
     <fragment
         android:id="@+id/add_transaction"

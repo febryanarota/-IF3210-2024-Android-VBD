@@ -23,6 +23,11 @@
     <string name="logoutButton">Logout</string>
     <string name="title_scan">Scan</string>
     <string name="save">Save</string>
+    <string name="select">Pilih Kategori</string>
     <string name="retake">Retake</string>
     <string name="done">Done</string>
+    <string name="title_graph">Graph</string>
+    <string name="bottom_dialogue_delete">Are you sure you want to delete this transaction?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>

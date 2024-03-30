@@ -51,7 +51,7 @@ class TransactionFactory(private val owner: LifecycleOwner) {
             minimumFractionDigits = 2
             isGroupingUsed = true
         }
-        transaction.price = "IDR ${format.format(price)}"
+        transaction.price = "${format.format(price)}"
     }
 
     // Edit location with current location, if possible
