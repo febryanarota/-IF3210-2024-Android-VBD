@@ -1,25 +1,31 @@
 package com.example.bondoman.fragments
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.databinding.FragmentGraphBinding
-import com.example.bondoman.viewmodels.DashboardViewModel
+import com.example.bondoman.repositories.TransactionRepository
+import com.example.bondoman.room.database.TransactionDatabase
+import com.example.bondoman.room.models.Transaction
+import com.example.bondoman.viewmodels.TransactionViewModel
+import com.example.bondoman.viewmodels.ViewModelFactory
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
-import okhttp3.internal.notify
+import com.github.mikephil.charting.data.LineDataSet
 
 class GraphFragment : Fragment() {
 
@@ -28,31 +34,60 @@ class GraphFragment : Fragment() {
     private val binding get() = _binding!!
 
     val values = ArrayList<PieEntry>()
+    private lateinit var viewModel: TransactionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
-
         _binding = FragmentGraphBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val textView: TextView = binding.textDashboard
-//        dashboardViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+        viewModel = ViewModelProvider(this, ViewModelFactory(
+            TransactionRepository(
+                TransactionDatabase.getDatabaseInstance(requireContext()))
+        )).get(TransactionViewModel::class.java)
 
-        dataListing()
+        val transactions = mutableListOf<Transaction>()
+        viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
+            transactions.clear()
+            transactions.addAll(transactionSnapshot)
+            for (transaction in transactions) {
+                Log.i("GRAPH FRAGMENT", transaction.price + " " + transaction.category)
+            }
+            dataListing(transactions)
+        })
+
+
 
         return root
     }
 
-    fun dataListing() {
-        values.add(PieEntry(30f, "Pembelian"))
-        values.add(PieEntry(80f, "Pemasukan"))
+    fun dataListing(transactions: MutableList<Transaction>) {
+        var pembelianTotal = 0f
+        var pemasukanTotal = 0f
+
+        for (transaction in transactions) {
+            if (transaction.category == "Pembelian") {
+                pembelianTotal += transaction.price.toFloatOrNull() ?: 0f
+            } else if (transaction.category == "Pemasukan") {
+                pemasukanTotal += transaction.price.toFloatOrNull() ?: 0f
+            }
+        }
+
+        var total = pembelianTotal + pemasukanTotal
+        var pembelianPercentage = pembelianTotal / total
+        var pemasukanPercentage = pemasukanTotal / total
+
+        Log.i("PEMBELIAN", pembelianTotal.toString())
+        values.clear()
+        if (pembelianTotal > 0) {
+            values.add(PieEntry(pembelianPercentage, "Pembelian"))
+        }
+        if (pemasukanTotal > 0) {
+            values.add(PieEntry(pemasukanPercentage, "Pemasukan"))
+        }
         setChart()
     }
 
@@ -68,8 +103,28 @@ class GraphFragment : Fragment() {
             binding.pieChart.data.notifyDataChanged()
             binding.pieChart.notifyDataSetChanged()
         } else {
+            val lineDataSet = LineDataSet(null, "Leader Line")
+            lineDataSet.setDrawIcons(false)
+            lineDataSet.color = Color.BLACK
+            lineDataSet.lineWidth = 2f
+
+            val lineData = LineData(lineDataSet)
+
             pieDataSetter = PieDataSet(values, "")
-            pieDataSetter.setColors(*ColorTemplate.VORDIPLOM_COLORS)
+
+            val colors = mutableListOf<Int>()
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    colors.add(Color.parseColor("#FF4198D7"))
+                    colors.add(Color.parseColor("#FF99D1FB"))
+                } else -> {
+                    colors.add(Color.parseColor("#7A4198D7"))
+                    colors.add(Color.parseColor("#454198D7"))
+                }
+            }
+
+            pieDataSetter.setColors(colors)
             pieDataSetter.setDrawValues(true)
             pieDataSetter.sliceSpace = 3f
             pieDataSetter.iconsOffset = MPPointF(10f, 10f)
@@ -81,14 +136,20 @@ class GraphFragment : Fragment() {
             val data = PieData(pieDataSetter)
             data.setValueFormatter(PercentFormatter())
             data.setValueTextSize(12f)
-            data.setValueTextColor(Color.BLACK)
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES ->
+                    data.setValueTextColor(Color.WHITE)
+                else ->
+                    data.setValueTextColor(Color.BLACK)
+            }
+
+            binding.pieChart.holeRadius = 13f
 
             binding.pieChart.data = data
             binding.pieChart.invalidate() // Redraw the chart
             binding.pieChart.description.isEnabled = false
 
             binding.pieChart.animateY(1400, Easing.EaseInOutQuad)
-            binding.pieChart.setEntryLabelColor(Color.BLACK)
             binding.pieChart.holeRadius = 13f
 
             binding.pieChart.setTransparentCircleColor(Color.BLUE)
@@ -96,8 +157,16 @@ class GraphFragment : Fragment() {
             binding.pieChart.transparentCircleRadius = 7f
 
             binding.pieChart.isDrawHoleEnabled = false
-
             binding.pieChart.setUsePercentValues(true)
+
+
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES ->
+                    binding.pieChart.setEntryLabelColor(Color.WHITE)
+                else ->
+                    binding.pieChart.setEntryLabelColor(Color.BLACK)
+            }
+
 
             val legend: Legend = binding.pieChart.legend
             legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
@@ -107,6 +176,13 @@ class GraphFragment : Fragment() {
             legend.xEntrySpace = 7f
             legend.yEntrySpace = 7f
             legend.yOffset = 0f
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_YES ->
+                    legend.textColor = Color.WHITE
+                else ->
+                    legend.textColor = Color.BLACK
+            }
+
         }
     }
 

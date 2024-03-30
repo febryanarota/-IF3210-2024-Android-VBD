@@ -41,8 +41,9 @@ class TransactionAdapter(private val context: Context, private val transactions:
             binding.tvLocation.text = transaction.location
             binding.tvDate.text = formatDateToString(transaction.date)
             binding.bttnTrash.setOnClickListener {
-                viewModel.deleteTransaction(transaction)
-                notifyItemRemoved(position)
+                clickListener.onDeleteClicked(transaction)
+//                viewModel.deleteTransaction(transaction)
+//                notifyItemRemoved(position)
             }
             binding.bttnEdit.setOnClickListener {
                 clickListener.onEditTransaction(transaction)
@@ -61,5 +62,6 @@ class TransactionAdapter(private val context: Context, private val transactions:
     interface TransactionClickListener {
         fun onEditTransaction(transaction: Transaction)
         fun onLocationClicked(transaction: Transaction)
+        fun onDeleteClicked(transaction: Transaction)
     }
 }
