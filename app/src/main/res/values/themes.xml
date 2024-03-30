@@ -36,4 +36,9 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="MyActiveBottomNavigationTextAppearance">
+        <item name="android:textColor">@color/P1</item>
+        <item name="android:background">@color/P1</item>
+    </style>
+
 </resources>
