@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.bondoman.R
 import com.example.bondoman.activities.LoginActivity
 import com.example.bondoman.databinding.FragmentSettingsBinding
 import com.example.bondoman.repositories.TransactionRepository
@@ -21,6 +23,10 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: TransactionViewModel
+
+    companion object {
+        const val RANDOMIZE_ACTION = "com.example.bondoman.RANDOMIZE_TRANSACTIONS"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +57,16 @@ class SettingsFragment : Fragment() {
             Toast.makeText(context, "Downloading file..", Toast.LENGTH_LONG).show()
             viewModel.downloadTransaction()
         }
+
+        val randomizeTransactionButton = binding.randomizeButton
+        randomizeTransactionButton.setOnClickListener {
+            val intent = Intent(RANDOMIZE_ACTION)
+            intent.putExtra("title", "Randomize Transaction")
+            intent.putExtra("nominal", "1000000")
+            intent.putExtra("category", "Pemasukan")
+            requireActivity().sendBroadcast(intent)
+        }
+
         return binding.root
     }
 

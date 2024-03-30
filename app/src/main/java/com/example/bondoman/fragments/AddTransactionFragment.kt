@@ -1,7 +1,7 @@
 package com.example.bondoman.fragments
 
-import android.health.connect.datatypes.BloodPressureRecord.BloodPressureMeasurementLocation
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,6 @@ class AddTransactionFragment() : Fragment() {
     private var _binding: FragmetAddTransactionBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +40,7 @@ class AddTransactionFragment() : Fragment() {
                 TransactionDatabase.getDatabaseInstance(requireContext()))
         )
         ).get(TransactionViewModel::class.java)
+
 
         val args = this.arguments
         val idData = args?.getString("id", "")
@@ -63,8 +63,9 @@ class AddTransactionFragment() : Fragment() {
             val nominal = binding.transactionNominal.text.toString()
             val category = binding.autoCompleteText.text.toString()
             val location = binding.transactionLocation.text.toString()
+
             if (isDataValid(title, nominal, category, location)) {
-                if (idData != null) {
+                if (idData != null && idData != "") {
                     val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = nominal, category = category, location = location)
                     viewModel.updateTransaction(updatedTransaction)
                 } else {
