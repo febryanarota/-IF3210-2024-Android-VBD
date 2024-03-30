@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//
-//        val intent = IntentFilter(SettingsFragment.RANDOMIZE_ACTION)
-//        registerReceiver(randomizeReceiver, intent, RECEIVER_NOT_EXPORTED)
+
+        val intent = IntentFilter(SettingsFragment.RANDOMIZE_ACTION)
+        registerReceiver(randomizeReceiver, intent, RECEIVER_NOT_EXPORTED)
 
         val serviceIntent = Intent(this, TokenValidationService::class.java)
         startService(serviceIntent)
@@ -68,18 +68,19 @@ class MainActivity : AppCompatActivity() {
     private val randomizeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action === SettingsFragment.RANDOMIZE_ACTION) {
-                Toast.makeText(context, "RECEIVED RANDOMIZE TRANSACTION", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "Successfully added new transaction", Toast.LENGTH_SHORT).show()
                 val title = intent.getStringExtra("title")
                 val nominal = intent.getStringExtra("nominal")
                 val category = intent.getStringExtra("category")
+
 
                 val bundle = Bundle().apply {
                     putString("title", title)
                     putString("nominal", nominal)
                     putString("category", category)
                 }
-//                val navController = findNavController(R.id.nav_host_fragment_activity_main)
-//                navController.navigate(R.id.action_navigation_settings_to_add_transaction, bundle)
+                val navController = findNavController(R.id.nav_host_fragment_activity_main)
+                navController.navigate(R.id.action_navigation_settings_to_add_transaction, bundle)
             }
         }
     }
@@ -92,6 +93,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        unregisterReceiver(randomizeReceiver)
+        unregisterReceiver(randomizeReceiver)
     }
 }

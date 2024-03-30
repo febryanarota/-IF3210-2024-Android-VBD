@@ -41,6 +41,7 @@ class AddTransactionFragment() : Fragment() {
         )
         ).get(TransactionViewModel::class.java)
 
+
         val args = this.arguments
         val idData = args?.getString("id", "")
         val titleData = args?.getString("title", "")
@@ -62,15 +63,14 @@ class AddTransactionFragment() : Fragment() {
             val nominal = binding.transactionNominal.text.toString()
             val category = binding.autoCompleteText.text.toString()
             val location = binding.transactionLocation.text.toString()
+
             if (isDataValid(title, nominal, category, location)) {
-                if (idData != null) {
+                if (idData != null && idData != "") {
                     val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = nominal, category = category, location = location)
                     viewModel.updateTransaction(updatedTransaction)
-                    Log.i("UPDATE TRANSACTION", "Transaction updated!")
                 } else {
                     val newTransaction = Transaction(place = title, price = nominal, category = category, location = location)
                     viewModel.addTransaction(newTransaction)
-                    Log.i("ADD TRANSACTION", "Transaction added!")
                 }
                 findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
             } else {
