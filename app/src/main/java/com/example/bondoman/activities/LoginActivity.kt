@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityLoginBinding
 import com.example.bondoman.utils.TokenValidationService
 import com.example.bondoman.viewmodels.LoginViewModel
@@ -49,6 +51,8 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
             loginViewModel.login(email, password)
         }
+//        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.header_nav))
+
     }
     private fun navigateToMain(context: Context) {
         val intent = Intent(context, MainActivity::class.java)

@@ -4,9 +4,19 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.view.Gravity
+import android.view.LayoutInflater
+import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -41,8 +51,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val navView: BottomNavigationView = binding.navView
-//        navView.itemTextAppearanceActive = R.style.MyActiveBottomNavigationTextAppearance
-//        navView.
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
@@ -56,6 +64,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_transaction, R.id.navigation_scan, R.id.navigation_graph, R.id.navigation_settings
             )
         )
+
+//        val title = SpannableString(supportActionBar?.title)
+//        title.setSpan(ForegroundColorSpan(Color.BLUE), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+//        supportActionBar?.title = title
+//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+//        supportActionBar!!.setTitle(Html.fromHtml("<font color=\"black\">Bondoman</font>"))
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
