@@ -124,7 +124,6 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     fun sendEmail(context: Context, userEmail: String) {
         viewModelScope.launch() {
-
             try {
                 transactionRepository.getAllTransactions().collect { transactions ->
                     val workbook = createWorkbook(transactions)
@@ -160,7 +159,6 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error: ${e.message}")
             }
 
