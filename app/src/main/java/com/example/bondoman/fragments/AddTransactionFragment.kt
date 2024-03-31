@@ -84,9 +84,13 @@ class AddTransactionFragment() : Fragment() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                transactionFactory.doWhenReady { transaction -> location = transaction.location }
+                transactionFactory.doWhenReady { transaction ->
+                    location = transaction.location
+                    launch(Dispatchers.Main) {
+                        binding.transactionLocation.setText(location)
+                    }
+                }
             }
-            binding.transactionLocation.setText(location)
         } else {
             binding.transactionLocation.setText(locationData)
         }
