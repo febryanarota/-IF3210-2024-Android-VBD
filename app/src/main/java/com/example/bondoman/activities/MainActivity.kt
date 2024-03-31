@@ -65,12 +65,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
-//        val title = SpannableString(supportActionBar?.title)
-//        title.setSpan(ForegroundColorSpan(Color.BLUE), 0, title.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-//        supportActionBar?.title = title
-//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-//        supportActionBar!!.setTitle(Html.fromHtml("<font color=\"black\">Bondoman</font>"))
-
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
