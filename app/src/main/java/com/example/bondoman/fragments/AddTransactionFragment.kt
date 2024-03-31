@@ -1,6 +1,7 @@
 package com.example.bondoman.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +59,11 @@ class AddTransactionFragment() : Fragment() {
         binding.bttnSave.setOnClickListener {
             onSaveButtonClicked(idData)
         }
+
+        binding.bttnSearchLoct.setOnClickListener {
+            onSearchLocationButtonClicked()
+        }
+
         return binding.root
     }
 
@@ -83,6 +89,22 @@ class AddTransactionFragment() : Fragment() {
             binding.transactionLocation.setText(location)
         } else {
             binding.transactionLocation.setText(locationData)
+        }
+    }
+
+    private fun onSearchLocationButtonClicked() {
+        lifecycleScope.launch(Dispatchers.Default) {
+            val transactionFactory = TransactionFactory(this@AddTransactionFragment)
+            try {
+                transactionFactory.setLocationAutomatic(this@AddTransactionFragment)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            transactionFactory.doWhenReady { transaction ->
+                Log.i("LOCATION", "transaction.location: ${transaction.location}")
+                val location = transaction.location
+                binding.transactionLocation.setText(location)
+            }
         }
     }
 
