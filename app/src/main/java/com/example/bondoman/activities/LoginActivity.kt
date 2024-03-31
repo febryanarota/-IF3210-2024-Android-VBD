@@ -51,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
             loginViewModel.login(email, password)
         }
-//        supportActionBar?.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.header_nav))
 
     }
     private fun navigateToMain(context: Context) {

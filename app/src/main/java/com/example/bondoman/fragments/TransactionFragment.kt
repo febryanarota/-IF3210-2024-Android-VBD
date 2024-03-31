@@ -25,6 +25,7 @@ import com.example.bondoman.viewmodels.TransactionViewModel
 import com.example.bondoman.viewmodels.ViewModelFactory
 import java.text.DecimalFormat
 import java.util.Locale
+import kotlin.math.abs
 import kotlin.math.log
 
 private const val TAG = "TransactionFragment"
@@ -58,12 +59,13 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
-        var balance = 0f
-        var pembelianTotal = 0f
-        var pemasukanTotal = 0f
+
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
-            if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
+//            if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
+                var balance = 0f
+                var pembelianTotal = 0f
+                var pemasukanTotal = 0f
                 transactions.clear()
                 transactions.addAll(transactionSnapshot)
                 for (transaction in transactions) {
@@ -75,15 +77,22 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
                     }
                 }
                 Log.i(TAG, "PembelianTotal: $pembelianTotal")
-                balance = pembelianTotal - pemasukanTotal
-                val balanceString = setPriceIDR(balance)
-                binding.textIDR.text = balanceString
+                balance = pemasukanTotal - pembelianTotal
+                if (balance < 0) {
+                    balance = abs(balance)
+                    val balanceString = "-" + setPriceIDR(balance)
+                    binding.textIDR.text = balanceString
+                } else {
+                    balance = abs(balance)
+                    val balanceString = setPriceIDR(balance)
+                    binding.textIDR.text = balanceString
+                }
                 transactionAdapter.notifyDataSetChanged()
-            } else {
+//            } else {
 //                for (i in 1..5) {
 //                    viewModel.addTransaction(Transaction(place = "Warteg", category = "Pembelian", location = "Ganyang", price = "15000"))
 //                }
-            }
+//            }
         })
 
 

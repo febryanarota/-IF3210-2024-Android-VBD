@@ -2,6 +2,7 @@ package com.example.bondoman.utils
 
 import android.location.Geocoder
 import android.location.Location
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.util.Locale
+import kotlin.math.log
 
 /*
 * Contoh penggunaan (TODO buat requirePermission yang bisa encapsulate sisanya):
@@ -57,7 +59,9 @@ class TransactionFactory(private val owner: LifecycleOwner) {
     // Edit location with current location, if possible
     @Throws(NullPointerException::class)
     fun setLocationAutomatic(caller: Fragment) {
+        Log.i("TEST FACTORY 2", "Before setting location")
         transaction.location = LocationUtils.locationString
+        Log.i("TEST FACTORY", "Location set to ${transaction.location}")
     }
 
     fun setLocationWithMaps(caller: Fragment) {

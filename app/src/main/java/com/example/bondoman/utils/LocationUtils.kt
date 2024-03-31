@@ -62,5 +62,4 @@ object LocationUtils: LocationListener {
         _location = location
         _locationString = _geocoder?.getFromLocation(location.latitude, location.longitude, 1)?.get(0)?.getAddressLine(0)
     }
-
 }
