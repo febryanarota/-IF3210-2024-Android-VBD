@@ -50,5 +50,8 @@
         <action
             android:id="@+id/action_add_transaction_to_navigation_transaction"
             app:destination="@id/navigation_transaction" />
+        <action
+            android:id="@+id/action_add_transaction_to_navigation_transaction2"
+            app:destination="@id/navigation_transaction" />
     </fragment>
 </navigation>

@@ -89,9 +89,12 @@ class SettingsFragment : Fragment() {
         val randomizeTransactionButton = binding.randomizeButton
         randomizeTransactionButton.setOnClickListener {
             val intent = Intent(RANDOMIZE_ACTION)
-            intent.putExtra("title", "Randomize Transaction")
-            intent.putExtra("nominal", "1000000")
-            intent.putExtra("category", "Pemasukan")
+            val id = (1..100).random()
+            val nominal = (1000..1000000).random().toString()
+            val category = if ((0..1).random() == 0) "Pemasukan" else "Pembelian"
+            intent.putExtra("title", "Randomize Transaction ${id}")
+            intent.putExtra("nominal", nominal)
+            intent.putExtra("category", category)
             requireActivity().sendBroadcast(intent)
         }
 
