@@ -46,7 +46,6 @@ class AddTransactionFragment() : Fragment() {
         )
         ).get(TransactionViewModel::class.java)
 
-
         val args = this.arguments
         val idData = args?.getString("id", "")
         val titleData = args?.getString("title", "")
