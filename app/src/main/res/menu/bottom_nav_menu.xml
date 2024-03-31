@@ -7,6 +7,11 @@
         android:title="@string/title_transaction" />
 
     <item
+        android:id="@+id/navigation_twibbon"
+        android:icon="@drawable/twibbon"
+        android:title="Twibbon" />
+
+    <item
         android:id="@+id/navigation_scan"
         android:icon="@drawable/scan"
         android:title="@string/title_scan" />
