@@ -59,12 +59,13 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
         binding.rvTransactions.adapter = transactionAdapter
         binding.rvTransactions.layoutManager = LinearLayoutManager(requireContext())
 
-        var balance = 0f
-        var pembelianTotal = 0f
-        var pemasukanTotal = 0f
+
 
         viewModel.getAllTransaction().observe(viewLifecycleOwner, Observer {transactionSnapshot ->
 //            if (transactionSnapshot != null && transactionSnapshot.isNotEmpty()) {
+                var balance = 0f
+                var pembelianTotal = 0f
+                var pemasukanTotal = 0f
                 transactions.clear()
                 transactions.addAll(transactionSnapshot)
                 for (transaction in transactions) {
