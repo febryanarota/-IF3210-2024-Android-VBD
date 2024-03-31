@@ -26,6 +26,7 @@ import java.util.Date
 private const val TAG = "TransactionViewModel"
 class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
     private val isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    val isSendEmail = MutableLiveData<Boolean>(false)
 
     fun getAllTransaction() = transactionRepository.getAllTransactions().asLiveData(viewModelScope.coroutineContext)
 
@@ -123,6 +124,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     fun sendEmail(context: Context, userEmail: String) {
         viewModelScope.launch() {
+
             try {
                 transactionRepository.getAllTransactions().collect { transactions ->
                     val workbook = createWorkbook(transactions)
@@ -131,22 +133,40 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                     workbook.write(outputStream)
 
                     // create email intent
-                    val emailIntent = Intent(Intent.ACTION_SEND)
-                    emailIntent.type = "application/vnd.ms-excel"
-                    emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(userEmail))
-                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Transaction Data")
-                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Please find attached the transaction data file.")
-                    emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context, context.packageName + ".provider", file))
-                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    if (isSendEmail.value === true) {
+                        val emailIntent = Intent(Intent.ACTION_SEND)
+                        emailIntent.type = "application/vnd.ms-excel"
+                        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(userEmail))
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Transaction Data")
+                        emailIntent.putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Please find attached the transaction data file."
+                        )
+                        emailIntent.putExtra(
+                            Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(
+                                context,
+                                context.packageName + ".provider",
+                                file
+                            )
+                        )
+                        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-                    // Start email intent
-                    context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
+                        // Start email intent
+                        context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
+                        Log.i(TAG, "send email intent")
+                    }
+                    isSendEmail.value = false
                 }
+
             } catch (e: Exception) {
                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error: ${e.message}")
             }
+
+            isSendEmail.value = false
         }
+
 
     }
 }
