@@ -103,7 +103,9 @@ class AddTransactionFragment() : Fragment() {
             transactionFactory.doWhenReady { transaction ->
                 Log.i("LOCATION", "transaction.location: ${transaction.location}")
                 val location = transaction.location
-                binding.transactionLocation.setText(location)
+                launch(Dispatchers.Main) {
+                    binding.transactionLocation.setText(location)
+                }
             }
         }
     }
