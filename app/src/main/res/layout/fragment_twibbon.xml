@@ -22,10 +22,10 @@
         <androidx.camera.view.PreviewView
             android:id="@+id/preview_view"
             android:layout_width="match_parent"
-            android:layout_height="512dp"
+            android:layout_height="552dp"
             android:layout_gravity="bottom"
-            android:layout_marginTop="43dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="43dp"
             android:foregroundGravity="bottom">
 
         </androidx.camera.view.PreviewView>
@@ -51,6 +51,35 @@
         android:src="@drawable/button_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+    <ImageButton
+        android:id="@+id/retakeButton"
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/retake_image"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_retake"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+
+    <ImageButton
+        android:id="@+id/flipButton"
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/flipImage"
+        android:src="@drawable/button_flip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
