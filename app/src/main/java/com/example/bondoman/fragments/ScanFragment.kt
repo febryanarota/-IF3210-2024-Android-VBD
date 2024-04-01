@@ -34,6 +34,7 @@ import com.example.bondoman.databinding.FragmentScanBinding
 import com.example.bondoman.models.BillList
 import com.example.bondoman.models.BillReq
 import com.example.bondoman.models.BillRes
+import com.example.bondoman.receivers.NetworkReceiver
 import com.example.bondoman.repositories.TransactionRepository
 import com.example.bondoman.room.database.TransactionDatabase
 import com.example.bondoman.room.models.Transaction
@@ -82,6 +83,8 @@ class ScanFragment : Fragment() {
     private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private var billList: BillList? = null
 
+    private lateinit var networkReceiver: NetworkReceiver
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -127,6 +130,29 @@ class ScanFragment : Fragment() {
                 }
             } else {
                 Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
+        // access network state
+        networkReceiver = object: NetworkReceiver(this@ScanFragment.requireContext()) {
+            override fun onNetworkChange(state: Companion.NetworkState) {
+                when (state) {
+                    Companion.NetworkState.NOT_CONNECTED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            showErrorMessage("No Connection Available")
+                        }
+                    }
+                    Companion.NetworkState.METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            resetLayout()
+                        }
+                    }
+                    Companion.NetworkState.NOT_METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            resetLayout()
+                        }
+                    }
+                }
             }
         }
 
@@ -269,6 +295,7 @@ class ScanFragment : Fragment() {
         binding.doneButton.visibility = View.GONE
 
         binding.loadingPanel.visibility = View.GONE
+        binding.debugOutputText.visibility = View.GONE
     }
 
     private fun showItems() {
@@ -283,6 +310,23 @@ class ScanFragment : Fragment() {
         binding.doneButton.visibility = View.VISIBLE
 
         binding.loadingPanel.visibility = View.GONE
+        binding.debugOutputText.visibility = View.GONE
+    }
+
+    private fun showErrorMessage(msg: String) {
+        binding.previewView.visibility = View.INVISIBLE
+        binding.imageView.visibility = View.INVISIBLE
+        binding.itemsView.visibility = View.VISIBLE
+
+        binding.captureButton.visibility = View.GONE
+        binding.galleryButton.visibility = View.GONE
+
+        binding.retakeButton.visibility = View.GONE
+        binding.doneButton.visibility = View.GONE
+
+        binding.loadingPanel.visibility = View.GONE
+        binding.debugOutputText.text = msg
+        binding.debugOutputText.visibility = View.VISIBLE
     }
 
     private fun onGalleryButtonClicked() {
