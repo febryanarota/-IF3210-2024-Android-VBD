@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var networkReceiver: NetworkReceiver
+    private var connected: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,10 @@ class MainActivity : AppCompatActivity() {
 
         TokenManager.init(this)
         val token = TokenManager.getToken()
-        if (token.isNullOrEmpty()) {
-            navigateToLogin(this)
-        }
+//        THESE LINES MOVED INTO networkReceiver
+//        if (token.isNullOrEmpty()) {
+//            navigateToLogin(this)
+//        }
 
         val navView: BottomNavigationView = binding.navView
 
@@ -80,17 +82,24 @@ class MainActivity : AppCompatActivity() {
                         lifecycleScope.launch (Dispatchers.Main) {
                             Toast.makeText(this@MainActivity, "Not connected to internet", Toast.LENGTH_SHORT).show()
                         }
+                        connected = false
                     }
                     Companion.NetworkState.METERED -> {
                         lifecycleScope.launch (Dispatchers.Main) {
                             Toast.makeText(this@MainActivity, "Connected with metered connection", Toast.LENGTH_SHORT).show()
                         }
+                        connected = true
                     }
                     Companion.NetworkState.NOT_METERED -> {
                         lifecycleScope.launch (Dispatchers.Main) {
                             Toast.makeText(this@MainActivity, "Connected with non metered connection", Toast.LENGTH_SHORT).show()
                         }
+                        connected = true
                     }
+                }
+
+                if (connected && token.isNullOrEmpty()) {
+                    navigateToLogin(this@MainActivity)
                 }
             }
         }
@@ -101,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED") {
+            if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED" && connected) {
                 TokenManager.removeToken()
                 navigateToLogin(this@MainActivity)
             }

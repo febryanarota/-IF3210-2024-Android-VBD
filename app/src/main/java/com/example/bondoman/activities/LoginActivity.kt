@@ -4,17 +4,23 @@ import TokenManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityLoginBinding
+import com.example.bondoman.receivers.NetworkReceiver
 import com.example.bondoman.utils.TokenValidationService
 import com.example.bondoman.viewmodels.LoginViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var networkReceiver: NetworkReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +63,26 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 binding.loginButton.setEnabled(true)
                 binding.loginButton.setText(R.string.login_button)
+            }
+        }
+
+        // If no internet, navigate to main
+        networkReceiver = object: NetworkReceiver(this@LoginActivity) {
+            override fun onNetworkChange(state: Companion.NetworkState) {
+                when (state) {
+                    Companion.NetworkState.NOT_CONNECTED -> {
+                        Log.e("CONN_LOGIN", "NOT CONNECTED")
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            navigateToMain(this@LoginActivity)
+                        }
+                    }
+                    Companion.NetworkState.METERED -> {
+
+                    }
+                    Companion.NetworkState.NOT_METERED -> {
+
+                    }
+                }
             }
         }
 
