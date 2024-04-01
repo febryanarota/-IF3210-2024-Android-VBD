@@ -20,9 +20,6 @@
         android:name="com.example.bondoman.fragments.TwibbonFragment"
         android:label="Twibbon"
         tools:layout="@layout/fragment_twibbon" >
-        <action
-            android:id="@+id/action_navigation_transaction_to_add_transaction"
-            app:destination="@id/add_transaction" />
     </fragment>
 
     <fragment
@@ -55,7 +52,7 @@
     <fragment
         android:id="@+id/add_transaction"
         android:name="com.example.bondoman.fragments.AddTransactionFragment"
-        android:label="Add Transaction"
+        android:label="Transaction"
         tools:layout="@layout/fragmet_add_transaction" >
         <action
             android:id="@+id/action_add_transaction_to_navigation_transaction"

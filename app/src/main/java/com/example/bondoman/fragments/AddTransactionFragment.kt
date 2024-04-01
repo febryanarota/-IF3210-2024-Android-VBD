@@ -56,10 +56,6 @@ class AddTransactionFragment() : Fragment() {
 
         setUpArguments(idData, titleData, nominalData, categoryData, locationData)
 
-        if (idData != null || idData != "") {
-//            set the fragment label to edit transaction
-            findNavController().currentDestination?.label = "Edit Transaction"
-        }
         binding.bttnSave.setOnClickListener {
             onSaveButtonClicked(idData)
         }
@@ -69,6 +65,19 @@ class AddTransactionFragment() : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        val args = this.arguments
+//        val idData = args?.getString("id", "")
+//        if (idData != null && idData != "") {
+//            Log.i("ADD TRANSACTION FRAGMENT", "idData: $idData, EDIT")
+//            findNavController().currentDestination?.label = "Edit Transaction"
+//        } else {
+//            Log.i("ADD TRANSACTION FRAGMENT", "idData: $idData, ADD")
+//            findNavController().currentDestination?.label = "Add Transaction"
+//        }
     }
 
     private fun setUpArguments(idData: String?, titleData: String?, nominalData: String?, categoryData: String?, locationData: String?) {
