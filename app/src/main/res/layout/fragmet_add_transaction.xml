@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:foregroundTint="#000000"
     tools:context=".fragments.AddTransactionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        tools:layout_editor_absoluteX="20dp">
 
         <LinearLayout
             android:id="@+id/add_transaction_form"
@@ -24,72 +23,94 @@
             android:layout_marginEnd="0dp"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
+
+            <TextView
+                android:id="@+id/tvTransactionTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:labelFor="@id/transactionTitle"
+                android:text="Judul Transaksi"
+                android:textColor="?textFillColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/transactionTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Judul Transaksi" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/transactionTitle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/transactionNominal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Nominal"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/tvNominal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:labelFor="@id/transactionNominal"
+                android:text="Nominal"
+                android:textColor="?textFillColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/transactionNominal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
+                app:endIconTint="?textFillColor"
                 android:hint="@string/select">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    android:textColorHighlight="#000000" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <TextView
+                android:id="@+id/tvTransactionLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:labelFor="@id/transactionLocation"
+                android:text="Lokasi"
+                android:textColor="?textFillColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="clip_vertical"
-                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <EditText
+                    android:id="@+id/transactionLocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/transactionLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:foregroundTint="#FF0000"
-                        android:hint="Lokasi" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="10"
+                    android:ems="10"
+                    android:inputType="text" />
 
                 <Button
                     android:id="@+id/bttnSearchLoct"
                     style="@style/Widget.MaterialComponents.Button.IconOnly"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/search_current_location_button"
                     app:icon="@drawable/location"
@@ -116,6 +137,30 @@
             android:paddingRight="40dp"
             android:text="@string/save"
             app:cornerRadius="20dp" />
+
+        <!--        <com.google.android.material.textfield.TextInputLayout-->
+        <!--            android:id="@+id/outlined_text_input_layout"-->
+        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_margin="10dp"-->
+        <!--            android:hint="OutlinedBox"-->
+        <!--            app:helperText="OutlinedBox helper helper"-->
+        <!--            app:boxStrokeColor="@color/black"-->
+        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--            app:layout_constraintRight_toRightOf="parent">-->
+
+        <!--            <com.google.android.material.textfield.TextInputEditText-->
+        <!--                android:id="@+id/outlined_edit_text"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginBottom="10dp"-->
+        <!--                android:paddingTop="20dp"-->
+        <!--                android:paddingStart="20dp"-->
+        <!--                android:paddingEnd="20dp"-->
+        <!--                android:textColorHighlight="@color/black" />-->
+
+        <!--        </com.google.android.material.textfield.TextInputLayout>-->
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
