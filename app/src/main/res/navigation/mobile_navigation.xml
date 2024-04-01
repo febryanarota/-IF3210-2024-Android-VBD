@@ -16,6 +16,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navigation_twibbon"
+        android:name="com.example.bondoman.fragments.TwibbonFragment"
+        android:label="Twibbon"
+        tools:layout="@layout/fragment_twibbon" >
+        <action
+            android:id="@+id/action_navigation_transaction_to_add_transaction"
+            app:destination="@id/add_transaction" />
+    </fragment>
+
+    <fragment
         android:id="@+id/navigation_scan"
         android:name="com.example.bondoman.fragments.ScanFragment"
         android:label="@string/title_scan"

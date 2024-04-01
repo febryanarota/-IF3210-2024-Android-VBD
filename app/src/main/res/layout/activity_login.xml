@@ -37,16 +37,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
-                    android:text="Login to "
+                    android:text="@string/login_to"
                     android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Bondoman"
+                    android:text="@string/bondoman"
                     android:textColor="#1852B6"
                     android:textColorLink="#2196F3"
                     android:textSize="24sp"
@@ -57,7 +57,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enter your registered account" />
+                android:text="@string/login_text" />
         </LinearLayout>
 
         <LinearLayout
@@ -79,7 +79,7 @@
                     android:id="@+id/emailEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email" />
+                    android:hint="@string/email_field" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +91,8 @@
                     android:id="@+id/passwordEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password" />
+                    android:inputType="textPassword"
+                    android:hint="@string/password_field" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -111,7 +112,7 @@
             android:layout_marginTop="0dp"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Login"
+            android:text="@string/login_button"
             app:cornerRadius="20dp"/>
     </LinearLayout>
 

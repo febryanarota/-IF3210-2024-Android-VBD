@@ -20,13 +20,14 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 private const val TAG = "TransactionViewModel"
 class TransactionViewModel(private val transactionRepository: TransactionRepository): ViewModel() {
     private val isRefreshingLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     val isSendEmail = MutableLiveData<Boolean>(false)
+    val fileFormat = MutableLiveData<String>("xls")
 
     fun getAllTransaction() = transactionRepository.getAllTransactions().asLiveData(viewModelScope.coroutineContext)
 
@@ -99,9 +100,10 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                             downloadDir.mkdirs()
                             Log.i(TAG, "downloadDir doesn't exist")
                         }
-                        val dateFormat = SimpleDateFormat("dd-MM-yy")
-                        val currentDate = Date()
-                        val file = File(downloadDir, "${dateFormat.format(currentDate)}.xls")
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd--HH-mm-ss")
+                        val currentDate = LocalDateTime.now()
+                        val fileName = "${formatter.format(currentDate)}.${fileFormat.value}"
+                        val file = File(downloadDir, fileName)
                         val fileOutputStream = FileOutputStream(file)
                         workbook.write(fileOutputStream)
                         fileOutputStream.close()
@@ -124,14 +126,12 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
 
     fun sendEmail(context: Context, userEmail: String) {
         viewModelScope.launch() {
-
             try {
                 transactionRepository.getAllTransactions().collect { transactions ->
                     val workbook = createWorkbook(transactions)
                     val file = File(context.cacheDir, "transaction.xls")
                     val outputStream = FileOutputStream(file)
                     workbook.write(outputStream)
-
                     // create email intent
                     if (isSendEmail.value === true) {
                         val emailIntent = Intent(Intent.ACTION_SEND)
@@ -160,11 +160,9 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 Log.e(TAG, "Error: ${e.message}")
+                isSendEmail.value = false
             }
-
-            isSendEmail.value = false
         }
 
 
