@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityLoginBinding
@@ -27,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
 
         // Observe token result
-        loginViewModel.token.observe(this, Observer { token ->
+        loginViewModel.token.observe(this) { token ->
             if (token.isNotEmpty()) {
                 TokenManager.init(this)
                 TokenManager.saveToken(token)
@@ -39,11 +37,11 @@ class LoginActivity : AppCompatActivity() {
                 editor.apply()
                 navigateToMain(this)
             }
-        })
+        }
 
-        loginViewModel.message.observe(this, Observer {message ->
+        loginViewModel.message.observe(this) { message ->
             binding.message.text = message
-        })
+        }
 
         // login button click listener
         binding.loginButton.setOnClickListener {
@@ -52,15 +50,15 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.login(email, password)
         }
 
-        loginViewModel.isLoading.observe(this, Observer {isLoading ->
+        loginViewModel.isLoading.observe(this) { isLoading ->
             if (isLoading) {
                 binding.loginButton.setEnabled(false)
-                binding.loginButton.text = "Please Wait..."
+                binding.loginButton.setText(R.string.loading_login)
             } else {
                 binding.loginButton.setEnabled(true)
-                binding.loginButton.text = "Login"
+                binding.loginButton.setText(R.string.login_button)
             }
-        })
+        }
 
     }
     private fun navigateToMain(context: Context) {

@@ -32,4 +32,12 @@
     <string name="cancel">Cancel</string>
     <string name="flipImage">flip image</string>
     <string name="retake_image">retake image</string>
+    <string name="login_button">Login</string>
+    <string name="loading_login">Please wait...</string>
+    <string name="twibbon">twibbon</string>
+    <string name="login_to">"Login to "</string>
+    <string name="bondoman">Bondoman</string>
+    <string name="login_text">Enter your registered account</string>
+    <string name="email_field">Email</string>
+    <string name="password_field">Password</string>
 </resources>
