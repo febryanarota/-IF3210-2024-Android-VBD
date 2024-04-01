@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/add_transaction"
         android:name="com.example.bondoman.fragments.AddTransactionFragment"
-        android:label="@string/title_transaction"
+        android:label="Add Transaction"
         tools:layout="@layout/fragmet_add_transaction" >
         <action
             android:id="@+id/action_add_transaction_to_navigation_transaction"

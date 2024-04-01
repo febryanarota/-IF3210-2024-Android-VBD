@@ -56,6 +56,10 @@ class AddTransactionFragment() : Fragment() {
 
         setUpArguments(idData, titleData, nominalData, categoryData, locationData)
 
+        if (idData != null || idData != "") {
+//            set the fragment label to edit transaction
+            findNavController().currentDestination?.label = "Edit Transaction"
+        }
         binding.bttnSave.setOnClickListener {
             onSaveButtonClicked(idData)
         }
