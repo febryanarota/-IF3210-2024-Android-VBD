@@ -65,13 +65,13 @@ abstract class NetworkReceiver(private val context: Context) {
         conn.registerNetworkCallback(meteredNetworkRequest, meteredNetworkCallback)
     }
 
-    public fun disconnect() {
+    fun disconnect() {
         val conn = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         conn.unregisterNetworkCallback(notMeteredNetworkCallback)
         conn.unregisterNetworkCallback(meteredNetworkCallback)
     }
 
-    public abstract fun onNetworkChange(state: NetworkState);
+    abstract fun onNetworkChange(state: NetworkState);
 
     companion object {
         enum class NetworkState {
