@@ -110,7 +110,9 @@
             android:layout_marginBottom="8dp"
             android:background="@android:color/transparent"
             app:icon="@drawable/pin"
-            app:iconTint="@null" />
+            app:iconTint="@null"
+            android:textColor="@color/white"
+            android:textSize="10sp"/>
 
         <TextView
             android:id="@+id/tvLocation"

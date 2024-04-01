@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="#000000"
     tools:context=".fragments.AddTransactionFragment">
 
     <LinearLayout
@@ -15,15 +16,13 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/login_form"
+            android:id="@+id/add_transaction_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="0dp"
-
             android:orientation="vertical">
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -36,6 +35,7 @@
                     android:hint="Judul Transaksi" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,40 +46,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nominal"
-                    android:inputType="numberDecimal"/>
+                    android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
-                android:hint="@string/select"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+                android:hint="@string/select">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"/>
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="clip_vertical"
+                android:layout_gravity="clip_vertical"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/transactionLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Pilih Lokasi" />
+                        android:foregroundTint="#FF0000"
+                        android:hint="Lokasi" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -87,12 +89,12 @@
                     style="@style/Widget.MaterialComponents.Button.IconOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_vertical"
                     android:background="@android:color/transparent"
+                    android:contentDescription="@string/search_current_location_button"
                     app:icon="@drawable/location"
                     app:iconTint="?textFillColor" />
             </LinearLayout>
-
 
 
             <TextView

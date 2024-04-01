@@ -44,4 +44,5 @@
     <string name="delete_transaction_button_desc">delete transaction</string>
     <string name="location_button_desc">open google maps</string>
     <string name="add_transaction_button_desc">add transaction</string>
+    <string name="search_current_location_button">search current location</string>
 </resources>
