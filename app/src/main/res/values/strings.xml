@@ -40,4 +40,8 @@
     <string name="login_text">Enter your registered account</string>
     <string name="email_field">Email</string>
     <string name="password_field">Password</string>
+    <string name="edit_button_content_desc">edit transaction button</string>
+    <string name="delete_transaction_button_desc">delete transaction button</string>
+    <string name="location_button_desc">open google maps button</string>
+    <string name="add_transaction_button_desc">add transaction button</string>
 </resources>

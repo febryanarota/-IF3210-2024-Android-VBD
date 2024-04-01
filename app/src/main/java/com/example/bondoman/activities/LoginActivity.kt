@@ -60,6 +60,7 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        supportActionBar?.hide()
     }
     private fun navigateToMain(context: Context) {
         val intent = Intent(context, MainActivity::class.java)

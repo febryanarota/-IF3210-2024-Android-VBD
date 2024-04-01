@@ -66,6 +66,7 @@
         <Button
             android:id="@+id/bttnAddTransaction"
             style="@style/Widget.MaterialComponents.Button.IconOnly"
+            android:contentDescription="@string/add_transaction_button_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

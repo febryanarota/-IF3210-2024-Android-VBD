@@ -74,6 +74,7 @@
         app:layout_constraintEnd_toStartOf="@+id/captureButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previewView"
+        app:tint="?textFillColor"
         tools:visibility="gone" />
 
     <RelativeLayout
@@ -91,13 +92,14 @@
 
     <Button
         android:id="@+id/retakeButton"
-        android:layout_width="153dp"
-        android:layout_height="44dp"
-        android:text="@string/retake"
-        android:fontFamily="@font/poppins"
-        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="40dp"
+        android:text="@string/retake"
         android:textColor="@color/P1"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/doneButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,13 +107,14 @@
 
     <Button
         android:id="@+id/doneButton"
-        android:layout_width="153dp"
-        android:layout_height="44dp"
-        android:text="@string/done"
-        android:fontFamily="@font/poppins"
-        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/P1"
+        android:fontFamily="@font/poppins"
+        android:paddingHorizontal="40dp"
+        android:text="@string/done"
         android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/retakeButton"
