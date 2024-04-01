@@ -52,6 +52,16 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.login(email, password)
         }
 
+        loginViewModel.isLoading.observe(this, Observer {isLoading ->
+            if (isLoading) {
+                binding.loginButton.setEnabled(false)
+                binding.loginButton.text = "Please Wait..."
+            } else {
+                binding.loginButton.setEnabled(true)
+                binding.loginButton.text = "Login"
+            }
+        })
+
     }
     private fun navigateToMain(context: Context) {
         val intent = Intent(context, MainActivity::class.java)
