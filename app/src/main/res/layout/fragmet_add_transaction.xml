@@ -73,8 +73,7 @@
                     android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColorHighlight="#000000" />
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 

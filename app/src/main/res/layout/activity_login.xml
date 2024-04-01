@@ -13,6 +13,7 @@
         android:layout_marginEnd="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,35 +68,42 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="0dp"
-
             android:orientation="vertical">
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
+                android:id="@+id/emailEditTextLabel"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:labelFor="@id/emailEditText"
+                android:text="Email"
+                android:textColor="?textFillColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/email_field"
-                    android:textColorHint="@color/black"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="20dp">
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/passwordEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:hint="@string/password_field"
-                    android:textColorHint="@color/black" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:id="@+id/passwordEditTextLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:labelFor="@id/passwordEditText"
+                android:text="Password"
+                android:layout_marginTop="20dp"
+                android:textColor="?textFillColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/message"
@@ -115,7 +123,7 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:text="@string/login_button"
-            app:cornerRadius="20dp"/>
+            app:cornerRadius="20dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
