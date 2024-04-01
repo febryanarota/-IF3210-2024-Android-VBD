@@ -134,6 +134,7 @@ class ScanFragment : Fragment() {
         }
 
         // access network state
+        showErrorMessage("No Connection Available")
         networkReceiver = object: NetworkReceiver(this@ScanFragment.requireContext()) {
             override fun onNetworkChange(state: Companion.NetworkState) {
                 when (state) {
@@ -378,6 +379,11 @@ class ScanFragment : Fragment() {
 
     private fun onRetakeButtonClicked() {
         resetLayout()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkReceiver.disconnect()
     }
 
     companion object {

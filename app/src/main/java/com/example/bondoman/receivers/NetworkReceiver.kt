@@ -8,9 +8,42 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 
-abstract class NetworkReceiver(context: Context) {
+abstract class NetworkReceiver(private val context: Context) {
     private var isConnectedNonMetered: Boolean = false
     private var isConnectedMetered: Boolean = false
+
+    val notMeteredNetworkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            if (!isConnectedNonMetered) {
+                isConnectedNonMetered = true
+                onNetworkChange(NetworkState.NOT_METERED)
+            }
+        }
+
+        override fun onLost(network: Network) {
+            isConnectedNonMetered = false
+            if (isConnectedMetered) {
+                onNetworkChange(NetworkState.METERED)
+            }
+            else {
+                onNetworkChange(NetworkState.NOT_CONNECTED)
+            }
+        }
+    }
+
+    val meteredNetworkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            if (!isConnectedMetered && !isConnectedNonMetered) {
+                onNetworkChange(NetworkState.METERED)
+            }
+            isConnectedMetered = true
+        }
+
+        override fun onLost(network: Network) {
+            onNetworkChange(NetworkState.NOT_CONNECTED)
+            isConnectedMetered = false
+        }
+    }
 
     init {
         val conn = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -26,44 +59,17 @@ abstract class NetworkReceiver(context: Context) {
             addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         }.build()
 
-        // register callback for non metered connection
-        conn.registerNetworkCallback(notMeteredNetworkRequest, object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                if (!isConnectedNonMetered) {
-                    isConnectedNonMetered = true
-                    onNetworkChange(NetworkState.NOT_METERED)
-                }
-            }
 
-            override fun onLost(network: Network) {
-                isConnectedNonMetered = false
-                if (isConnectedMetered) {
-                    onNetworkChange(NetworkState.METERED)
-                }
-                else {
-                    onNetworkChange(NetworkState.NOT_CONNECTED)
-                }
-            }
-        })
-
-        // register callback for non metered connection
-        conn.registerNetworkCallback(meteredNetworkRequest, object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                if (!isConnectedMetered && !isConnectedNonMetered) {
-                    onNetworkChange(NetworkState.METERED)
-                }
-                isConnectedMetered = true
-            }
-
-            override fun onLost(network: Network) {
-                onNetworkChange(NetworkState.NOT_CONNECTED)
-                isConnectedMetered = false
-            }
-        })
-
+        // register callback
+        conn.registerNetworkCallback(notMeteredNetworkRequest, notMeteredNetworkCallback)
+        conn.registerNetworkCallback(meteredNetworkRequest, meteredNetworkCallback)
     }
 
-
+    public fun disconnect() {
+        val conn = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        conn.unregisterNetworkCallback(notMeteredNetworkCallback)
+        conn.unregisterNetworkCallback(meteredNetworkCallback)
+    }
 
     public abstract fun onNetworkChange(state: NetworkState);
 
