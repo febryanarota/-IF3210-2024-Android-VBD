@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScanFragment">
 
+    <TextView
+        android:id="@+id/debugOutputText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No connection available"
+        android:textSize="22sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="23dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/itemsView"
         android:layout_width="0dp"

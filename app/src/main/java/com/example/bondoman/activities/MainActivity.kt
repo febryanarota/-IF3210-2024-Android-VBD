@@ -13,10 +13,12 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -25,11 +27,16 @@ import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityMainBinding
 import com.example.bondoman.utils.LocationUtils
 import com.example.bondoman.fragments.SettingsFragment
+import com.example.bondoman.receivers.NetworkReceiver
 import com.example.bondoman.utils.TokenValidationService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var networkReceiver: NetworkReceiver
+    private var connected: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +53,10 @@ class MainActivity : AppCompatActivity() {
 
         TokenManager.init(this)
         val token = TokenManager.getToken()
-        if (token.isNullOrEmpty()) {
-            navigateToLogin(this)
-        }
+//        THESE LINES MOVED INTO networkReceiver
+//        if (token.isNullOrEmpty()) {
+//            navigateToLogin(this)
+//        }
 
         val navView: BottomNavigationView = binding.navView
 
@@ -65,13 +73,44 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        // Setup network receiver
+        // Send toast message every time it detect changes
+        networkReceiver = object: NetworkReceiver(this@MainActivity) {
+            override fun onNetworkChange(state: Companion.NetworkState) {
+                when (state) {
+                    Companion.NetworkState.NOT_CONNECTED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Not connected to internet", Toast.LENGTH_SHORT).show()
+                        }
+                        connected = false
+                    }
+                    Companion.NetworkState.METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Connected with metered connection", Toast.LENGTH_SHORT).show()
+                        }
+                        connected = true
+                    }
+                    Companion.NetworkState.NOT_METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Connected with non metered connection", Toast.LENGTH_SHORT).show()
+                        }
+                        connected = true
+                    }
+                }
+
+                if (connected && token.isNullOrEmpty()) {
+                    navigateToLogin(this@MainActivity)
+                }
+            }
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED") {
+            if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED" && connected) {
                 TokenManager.removeToken()
                 navigateToLogin(this@MainActivity)
             }
@@ -108,5 +147,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         unregisterReceiver(randomizeReceiver)
         unregisterReceiver(broadcastReceiver)
+        networkReceiver.disconnect()
     }
 }
