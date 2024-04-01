@@ -98,4 +98,9 @@ class LoginActivity : AppCompatActivity() {
         stopService(serviceIntent)
         startService(serviceIntent)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkReceiver.disconnect()
+    }
 }

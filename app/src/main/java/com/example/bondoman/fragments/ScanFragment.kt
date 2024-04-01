@@ -381,6 +381,11 @@ class ScanFragment : Fragment() {
         resetLayout()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        networkReceiver.disconnect()
+    }
+
     companion object {
 
     }

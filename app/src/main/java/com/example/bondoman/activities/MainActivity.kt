@@ -147,5 +147,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         unregisterReceiver(randomizeReceiver)
         unregisterReceiver(broadcastReceiver)
+        networkReceiver.disconnect()
     }
 }
