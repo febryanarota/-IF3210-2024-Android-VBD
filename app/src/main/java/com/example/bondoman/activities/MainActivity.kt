@@ -13,10 +13,12 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -25,11 +27,15 @@ import com.example.bondoman.R
 import com.example.bondoman.databinding.ActivityMainBinding
 import com.example.bondoman.utils.LocationUtils
 import com.example.bondoman.fragments.SettingsFragment
+import com.example.bondoman.receivers.NetworkReceiver
 import com.example.bondoman.utils.TokenValidationService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var networkReceiver: NetworkReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +70,30 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_transaction, R.id.navigation_scan, R.id.navigation_graph, R.id.navigation_settings
             )
         )
+
+        // Setup network receiver
+        // Send toast message every time it detect changes
+        networkReceiver = object: NetworkReceiver(this@MainActivity) {
+            override fun onNetworkChange(state: Companion.NetworkState) {
+                when (state) {
+                    Companion.NetworkState.NOT_CONNECTED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Not connected to internet", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    Companion.NetworkState.METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Connected with metered connection", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    Companion.NetworkState.NOT_METERED -> {
+                        lifecycleScope.launch (Dispatchers.Main) {
+                            Toast.makeText(this@MainActivity, "Connected with non metered connection", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
