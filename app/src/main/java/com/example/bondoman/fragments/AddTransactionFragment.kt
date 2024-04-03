@@ -60,6 +60,10 @@ class AddTransactionFragment() : Fragment() {
             onSaveButtonClicked(idData)
         }
 
+        binding.bttnCancel.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.bttnSearchLoct.setOnClickListener {
             onSearchLocationButtonClicked()
         }

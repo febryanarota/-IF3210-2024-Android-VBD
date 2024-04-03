@@ -45,9 +45,12 @@ class TransactionAdapter(private val context: Context, private val transactions:
 //                viewModel.deleteTransaction(transaction)
 //                notifyItemRemoved(position)
             }
+            binding.bttnTrash.contentDescription = "Delete transaction ${transaction.place}, ${transaction.category} IDR ${transaction.price} at ${transaction.location} on ${formatDateToString(transaction.date)}"
+            binding.bttnEdit.contentDescription = "Edit transaction ${transaction.place}, ${transaction.category} IDR ${transaction.price} at ${transaction.location} on ${formatDateToString(transaction.date)}"
             binding.bttnEdit.setOnClickListener {
                 clickListener.onEditTransaction(transaction)
             }
+            binding.bttnLocation.contentDescription = "Open google maps for location of transaction ${transaction.place}, ${transaction.category} IDR ${transaction.price} at ${transaction.location} on ${formatDateToString(transaction.date)}"
             binding.bttnLocation.setOnClickListener {
                 clickListener.onLocationClicked(transaction)
             }

@@ -73,8 +73,7 @@
                     android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:textColorHighlight="#000000" />
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -128,39 +127,36 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bttnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:text="@string/save"
-            app:cornerRadius="20dp" />
 
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/outlined_text_input_layout"-->
-        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_margin="10dp"-->
-        <!--            android:hint="OutlinedBox"-->
-        <!--            app:helperText="OutlinedBox helper helper"-->
-        <!--            app:boxStrokeColor="@color/black"-->
-        <!--            app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--            app:layout_constraintRight_toRightOf="parent">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/outlined_edit_text"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginBottom="10dp"-->
-        <!--                android:paddingTop="20dp"-->
-        <!--                android:paddingStart="20dp"-->
-        <!--                android:paddingEnd="20dp"-->
-        <!--                android:textColorHighlight="@color/black" />-->
+            <Button
+                android:id="@+id/bttnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:backgroundTint="?colorAccent"
+                android:paddingHorizontal="40dp"
+                android:text="Cancel"
+                android:layout_weight="1"
+                android:textColor="?colorPrimary"
+                app:cornerRadius="20dp" />
 
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
+            <Button
+                android:id="@+id/bttnSave"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:paddingHorizontal="40dp"
+                android:text="@string/save"
+                android:layout_weight="1"
+                app:cornerRadius="20dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

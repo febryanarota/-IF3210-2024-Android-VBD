@@ -61,7 +61,6 @@
     <Button
         android:id="@+id/bttnEdit"
         style="@style/Widget.MaterialComponents.Button.IconOnly"
-        android:contentDescription="@string/edit_button_content_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
@@ -75,7 +74,6 @@
     <Button
         android:id="@+id/bttnTrash"
         style="@style/Widget.MaterialComponents.Button.IconOnly"
-        android:contentDescription="@string/delete_transaction_button_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="83dp"
@@ -103,7 +101,6 @@
         <Button
             android:id="@+id/bttnLocation"
             style="@style/Widget.MaterialComponents.Button.IconOnly"
-            android:contentDescription="@string/location_button_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
