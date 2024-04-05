@@ -73,7 +73,11 @@ class AddTransactionFragment() : Fragment() {
 
     private fun setUpArguments(idData: String?, titleData: String?, nominalData: String?, categoryData: String?, locationData: String?) {
         binding.transactionTitle.setText(titleData)
-        binding.transactionNominal.setText(nominalData)
+        if (nominalData != null) {
+            binding.transactionNominal.setText(setPriceBack(nominalData).toString())
+        } else {
+            binding.transactionNominal.setText("0")
+        }
         if (categoryData != null) {
             binding.autoCompleteText.setText(categoryData, false)
         } else {
@@ -134,9 +138,12 @@ class AddTransactionFragment() : Fragment() {
 
         if (isDataValid(title, nominal, category, location)) {
             if (idData != null && idData != "") {
+                Log.i("UPDATE TRANSACTION", "TES")
+                Log.i("UPDATE TRANSACTION", "ID: $idData")
                 val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = setPriceIDR(nominalFloat), category = category, location = location)
                 viewModel.updateTransaction(updatedTransaction)
             } else {
+                Log.i("ADD TRANSACTION", "TES")
                 val newTransaction = Transaction(place = title, price = setPriceIDR(nominalFloat), category = category, location = location)
                 viewModel.addTransaction(newTransaction)
             }
@@ -170,6 +177,17 @@ class AddTransactionFragment() : Fragment() {
             isGroupingUsed = true
         }
         return "${format.format(price)}"
+    }
+
+    private fun setPriceBack(price: String?): Float {
+        val format = DecimalFormat.getInstance(Locale("id", "ID"))
+        format.apply {
+            maximumFractionDigits = 2
+            minimumFractionDigits = 2
+            isGroupingUsed = true
+        }
+        val price = format.parse(price)
+        return price.toFloat()
     }
 
     override fun onDestroyView() {
