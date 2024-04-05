@@ -39,10 +39,10 @@ class BillAdapter(private val context: Context, private val bill: BillList)
                 billItem.name = text.toString()
             }
             binding.editTextNumber.doAfterTextChanged { text ->
-                billItem.qty = text.toString().toInt()
+                billItem.qty = text.toString().toIntOrNull() ?: 0
             }
             binding.editTextNumberDecimal.doAfterTextChanged { text ->
-                billItem.price = text.toString().toFloat()
+                billItem.price = text.toString().toFloatOrNull() ?: 0F
             }
         }
     }
