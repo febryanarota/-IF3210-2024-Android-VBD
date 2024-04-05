@@ -105,6 +105,9 @@ Aplikasi manajemen keuangan dengan kemampuan menyimpan dan menampilkan detail tr
       Token yang didapat dari backend harus disimpan dengan aman. Untuk itu, kami menggunakan encrypted shared preferences agar token tersebut tidak tersimpan plaintext. Kunci yang digunakan adalah AES-256, yang cukup kuat untuk standar sekarang. 
 
 ## Accessibility Testing
+Accessibility Testing dilakukan dengan menggunakan aplikasi Accessibility Scanner yang terdapat pada playstore. Dengan membuka aplikasi BondoMan dan menggunakan tools screen record pada accessibility scanner kemudian melakukan tour pada aplikasi, maka accessibility scanner akan mengusulkan beberapa perbaikan akan aksesibilitas. Berikut adalah beberapa suggestion sebelum dilakukan perbaikan aksesibilitas pada aplikasi. 
+
+
 
 ## Pembagian Kerja
 - 13521120 Febryan Arota Hia
