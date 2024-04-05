@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.NumberFormat
+import java.util.Date
 import java.util.Locale
 
 class AddTransactionFragment() : Fragment() {
@@ -54,11 +55,12 @@ class AddTransactionFragment() : Fragment() {
         val nominalData = args?.getString("nominal", "")
         val categoryData = args?.getString("category", "Pembelian")
         val locationData = args?.getString("location", "")
+        val date = args?.getString("date", "")
 
         setUpArguments(idData, titleData, nominalData, categoryData, locationData)
 
         binding.bttnSave.setOnClickListener {
-            onSaveButtonClicked(idData)
+            onSaveButtonClicked(idData, date)
         }
 
         binding.bttnCancel.setOnClickListener {
@@ -123,7 +125,7 @@ class AddTransactionFragment() : Fragment() {
         }
     }
 
-    private fun onSaveButtonClicked(idData: String?) {
+    private fun onSaveButtonClicked(idData: String?, date: String?) {
         val format: NumberFormat = NumberFormat.getInstance(Locale("id", "ID"))
         Log.i("ADD TRANSACTION ON SAVE", "TES")
 
@@ -142,7 +144,7 @@ class AddTransactionFragment() : Fragment() {
             if (idData != null && idData != "") {
                 Log.i("UPDATE TRANSACTION", "TES")
                 Log.i("UPDATE TRANSACTION", "ID: $idData")
-                val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = setPriceIDR(nominalFloat), category = category, location = location)
+                val updatedTransaction = Transaction(id = idData.toLong(), place = title, price = setPriceIDR(nominalFloat), category = category, location = location, date = Date(date))
                 viewModel.updateTransaction(updatedTransaction)
             } else {
                 Log.i("ADD TRANSACTION", "TES")

@@ -126,6 +126,7 @@ class TransactionFragment : Fragment(), TransactionAdapter.TransactionClickListe
             putString("nominal", transaction.price)
             putString("category", transaction.category)
             putString("location", transaction.location)
+            putString("date", transaction.date.toString())
         }
 
         findNavController().navigate(R.id.action_navigation_transaction_to_add_transaction, bundle)
