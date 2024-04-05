@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val intent = IntentFilter(SettingsFragment.RANDOMIZE_ACTION)
-        registerReceiver(randomizeReceiver, intent, RECEIVER_NOT_EXPORTED)
+        registerReceiver(randomizeReceiver, intent, RECEIVER_EXPORTED)
 
         val serviceIntent = Intent(this, TokenValidationService::class.java)
         startService(serviceIntent)
