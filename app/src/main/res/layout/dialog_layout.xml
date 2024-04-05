@@ -30,8 +30,7 @@
             android:layout_weight="1"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="@string/cancel"
-            android:textColor="?colorPrimary"
+            android:textColor="@color/white"
             app:cornerRadius="20dp" />
 
         <Button
@@ -42,8 +41,7 @@
             android:layout_weight="1"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="@string/delete"
-            android:textColor="?colorAccent"
+            android:textColor="@color/white"
             app:cornerRadius="20dp" />
     </LinearLayout>
 

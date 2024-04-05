@@ -56,12 +56,6 @@ class AddTransactionFragment() : Fragment() {
 
         setUpArguments(idData, titleData, nominalData, categoryData, locationData)
 
-        Log.i("ADD TRANSACTION", "title: $titleData")
-        Log.i("ADD TRANSACTION", "nominal: $nominalData")
-        Log.i("ADD TRANSACTION", "nominalFloat: $nominalData")
-        Log.i("ADD TRANSACTION", "category: $categoryData")
-        Log.i("ADD TRANSACTION", "location: $locationData")
-
         binding.bttnSave.setOnClickListener {
             onSaveButtonClicked(idData)
         }
@@ -137,13 +131,6 @@ class AddTransactionFragment() : Fragment() {
         val nominalFloat = binding.transactionNominal.text.toString().toFloat()
         val category = binding.autoCompleteText.text.toString()
         val location = binding.transactionLocation.text.toString()
-//        log all the atributte above
-        Log.i("ADD TRANSACTION ON SAVE", "nominal: $nominal")
-        Log.i("ADD TRANSACTION ON SAVE", "nominalFloat: $nominalFloat")
-        Log.i("ADD TRANSACTION ON SAVE", "category: $category")
-        Log.i("ADD TRANSACTION ON SAVE", "location: $location")
-
-
 
         if (isDataValid(title, nominal, category, location)) {
             if (idData != null && idData != "") {
