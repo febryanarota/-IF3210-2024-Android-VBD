@@ -9,80 +9,110 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:foregroundGravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/frameButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        android:layout_marginHorizontal="21dp">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/preview_view"
             android:layout_width="match_parent"
-            android:layout_height="552dp"
-            android:layout_gravity="bottom"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="43dp"
-            android:foregroundGravity="bottom">
-
-        </androidx.camera.view.PreviewView>
+            android:layout_height="match_parent"
+            android:layout_marginTop="21dp"/>
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:contentDescription="@string/twibbon"
-            android:layout_gravity="bottom|fill_horizontal"
+            android:layout_gravity="bottom"
+            android:scaleType="fitEnd"
             android:src="@drawable/twibbonpic" />
 
     </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/captureButton"
-        android:layout_width="74dp"
+    <FrameLayout
+        android:id="@+id/frameButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@android:color/transparent"
-
-        android:contentDescription="@string/capture_image"
-        android:scaleType="fitCenter"
-        android:src="@drawable/button_camera"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
-    <ImageButton
-        android:id="@+id/retakeButton"
-        android:layout_width="74dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@string/retake_image"
-        android:scaleType="fitCenter"
-        android:src="@drawable/button_retake"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        <ImageButton
+            android:id="@+id/captureButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/transparent"
 
+            android:contentDescription="@string/capture_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
-    <ImageButton
-        android:id="@+id/flipButton"
-        android:layout_width="74dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@string/flipImage"
-        android:src="@drawable/button_flip"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        <ImageButton
+            android:id="@+id/retakeButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/transparent"
+
+            android:contentDescription="@string/retake_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_retake"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/retakeButton"-->
+<!--            android:layout_width="74dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="44dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="@string/retake_image"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:src="@drawable/button_retake"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.498"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />-->
+
+        <ImageButton
+            android:id="@+id/flipButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/flipImage"
+            android:src="@drawable/button_flip"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.148"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            android:layout_marginLeft="40dp"
+            app:tint="?textFillColor" />
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

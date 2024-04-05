@@ -43,7 +43,7 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:text="@string/delete"
-            android:textColor="?colorAccent"
+            android:textColor="?colorPrimary"
             app:cornerRadius="20dp" />
     </LinearLayout>
 
