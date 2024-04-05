@@ -107,7 +107,15 @@ Aplikasi manajemen keuangan dengan kemampuan menyimpan dan menampilkan detail tr
 
 ## Accessibility Testing
 Accessibility Testing dilakukan dengan menggunakan aplikasi Accessibility Scanner yang terdapat pada playstore. Dengan membuka aplikasi BondoMan dan menggunakan tools screen record pada accessibility scanner kemudian melakukan tour pada aplikasi, maka accessibility scanner akan mengusulkan beberapa perbaikan akan aksesibilitas. Berikut adalah beberapa suggestion sebelum dilakukan perbaikan aksesibilitas pada aplikasi. 
+![Item Label](screenshot/230133_0.jpg)
+![Touch Target](screenshot/230134_0.jpg)
+![Text Scaling](screenshot/230135_0.jpg)
+![Image Contrast](screenshot/230136_0.jpg)
+![Item Description](screenshot/230137_0.jpg)
+![Text Contrast](screenshot/230138_0.jpg)
 
+Setelah dilakukan beberapa perbaikan, berikut adalah hasil akhir accessibility testing.
+![Hasil Perbaikan Accessibility Testing](screenshot/230305.jpg)
 
 
 ## Pembagian Kerja
