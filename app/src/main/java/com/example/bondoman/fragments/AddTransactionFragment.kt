@@ -22,7 +22,6 @@ import com.example.bondoman.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.util.Locale
 
 class AddTransactionFragment() : Fragment() {
@@ -120,11 +119,16 @@ class AddTransactionFragment() : Fragment() {
     }
 
     private fun onSaveButtonClicked(idData: String?) {
-        val format: NumberFormat = NumberFormat.getInstance(Locale("id", "ID"))
+        Log.i("ADD TRANSACTION ON SAVE", "TES")
+
+        if (!dataNotNUll()) {
+            binding.errorMessage.text = "Fields cannot be empty!"
+            return
+        }
 
         val title = binding.transactionTitle.text.toString()
         val nominal = binding.transactionNominal.text.toString()
-        val nominalFloat = format.parse(binding.transactionNominal.text.toString())?.toFloat() ?: 0F
+        val nominalFloat = binding.transactionNominal.text.toString().toFloat()
         val category = binding.autoCompleteText.text.toString()
         val location = binding.transactionLocation.text.toString()
 
@@ -139,6 +143,14 @@ class AddTransactionFragment() : Fragment() {
             findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
         } else {
             binding.errorMessage.text = "Fields cannot be empty!"
+        }
+    }
+
+    private fun dataNotNUll(): Boolean {
+        if (binding.transactionTitle.text.toString().isNotBlank() && binding.transactionNominal.text.toString().isNotBlank() && binding.autoCompleteText.text.toString().isNotBlank() && binding.transactionLocation.text.toString().isNotBlank()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity() {
 
     private val randomizeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+//            Toast.makeText(context, "Receive Broadcast", Toast.LENGTH_SHORT).show()
             if (intent?.action === SettingsFragment.RANDOMIZE_ACTION) {
 //                Toast.makeText(context, "Successfully added new transaction", Toast.LENGTH_SHORT).show()
                 val title = intent.getStringExtra("title")
