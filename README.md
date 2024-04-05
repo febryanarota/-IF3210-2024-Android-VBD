@@ -11,6 +11,7 @@ Aplikasi manajemen keuangan dengan kemampuan menyimpan dan menampilkan detail tr
 4. [Analisis OWASP](#analisis-owasp)
 5. [Accessibility Testing](#accessibility-testing)
 4. [Pembagian Kerja](#pembagian-kerja)
+7. [Waktu Pengerjaan](#waktu-pengerjaan)
 
 
 ## Fitur
@@ -127,3 +128,10 @@ Aplikasi manajemen keuangan dengan kemampuan menyimpan dan menampilkan detail tr
     - Randomize
     - Accessibility Testing
 
+## Waktu pengerjaan
+- 13521120 Febryan Arota Hia\
+  10 jam persiapan, 40 jam pengerjaan
+- 13521137 Michael Utama\
+  10 jam persiapan, 35 jam pengerjaan
+- 13521156 Brigita Tri Carolina\
+  10 jam persiapan, 40 jam pengerjaan
