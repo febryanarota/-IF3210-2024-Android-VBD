@@ -140,7 +140,7 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Transaction Data")
                         emailIntent.putExtra(
                             Intent.EXTRA_TEXT,
-                            "Please find attached the transaction data file."
+                            "The transaction file is attached."
                         )
                         emailIntent.putExtra(
                             Intent.EXTRA_STREAM,
@@ -152,8 +152,11 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                         )
                         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
+                        val gmailPackageName = "com.google.android.gm"
+                        emailIntent.setPackage(gmailPackageName)
+
                         // Start email intent
-                        context.startActivity(Intent.createChooser(emailIntent, "Send Email"))
+                        context.startActivity(emailIntent)
                         Log.i(TAG, "send email intent")
                     }
                     isSendEmail.value = false
@@ -164,7 +167,5 @@ class TransactionViewModel(private val transactionRepository: TransactionReposit
                 isSendEmail.value = false
             }
         }
-
-
     }
 }
