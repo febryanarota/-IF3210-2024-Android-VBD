@@ -84,6 +84,7 @@ class ScanFragment : Fragment() {
     private var billList: BillList? = null
 
     private lateinit var networkReceiver: NetworkReceiver
+    private var state: State = State.ERROR
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -140,17 +141,42 @@ class ScanFragment : Fragment() {
                 when (state) {
                     Companion.NetworkState.NOT_CONNECTED -> {
                         lifecycleScope.launch (Dispatchers.Main) {
-                            showErrorMessage("No Connection Available")
+                            if (this@ScanFragment.state == State.CONFIRM) {
+                                binding.retakeButton.visibility = View.INVISIBLE
+                            }
+                            else {
+                                showErrorMessage("No Connection Available")
+                            }
                         }
                     }
                     Companion.NetworkState.METERED -> {
                         lifecycleScope.launch (Dispatchers.Main) {
-                            resetLayout()
+                            when (this@ScanFragment.state) {
+                                State.CONFIRM -> {
+                                    binding.retakeButton.visibility = View.VISIBLE
+                                }
+                                State.WAIT -> {
+                                    // nothing
+                                }
+                                else -> {
+                                    resetLayout()
+                                }
+                            }
                         }
                     }
                     Companion.NetworkState.NOT_METERED -> {
                         lifecycleScope.launch (Dispatchers.Main) {
-                            resetLayout()
+                            when (this@ScanFragment.state) {
+                                State.CONFIRM -> {
+                                    binding.retakeButton.visibility = View.VISIBLE
+                                }
+                                State.WAIT -> {
+                                    // nothing
+                                }
+                                else -> {
+                                    resetLayout()
+                                }
+                            }
                         }
                     }
                 }
@@ -297,6 +323,7 @@ class ScanFragment : Fragment() {
 
         binding.loadingPanel.visibility = View.GONE
         binding.debugOutputText.visibility = View.GONE
+        state = State.CAPTURE
     }
 
     private fun showItems() {
@@ -312,12 +339,13 @@ class ScanFragment : Fragment() {
 
         binding.loadingPanel.visibility = View.GONE
         binding.debugOutputText.visibility = View.GONE
+        state = State.CONFIRM
     }
 
     private fun showErrorMessage(msg: String) {
         binding.previewView.visibility = View.INVISIBLE
         binding.imageView.visibility = View.INVISIBLE
-        binding.itemsView.visibility = View.VISIBLE
+        binding.itemsView.visibility = View.GONE
 
         binding.captureButton.visibility = View.GONE
         binding.galleryButton.visibility = View.GONE
@@ -328,6 +356,7 @@ class ScanFragment : Fragment() {
         binding.loadingPanel.visibility = View.GONE
         binding.debugOutputText.text = msg
         binding.debugOutputText.visibility = View.VISIBLE
+        state = State.ERROR
     }
 
     private fun onGalleryButtonClicked() {
@@ -387,6 +416,11 @@ class ScanFragment : Fragment() {
     }
 
     companion object {
-
+        enum class State {
+            CAPTURE, // Capturing image with camera
+            WAIT,
+            CONFIRM,
+            ERROR,
+        }
     }
 }
