@@ -116,7 +116,7 @@ Accessibility Testing dilakukan dengan menggunakan aplikasi Accessibility Scanne
 ![Text Contrast](screenshot/230138_0.jpg)
 
 Setelah dilakukan beberapa perbaikan, berikut adalah hasil akhir accessibility testing.
-![Hasil Perbaikan Accessibility Testing](screenshot/230305.jpg)
+![Hasil Perbaikan Accessibility Testing](screenshot/232939.jpg)
 
 Beberapa perbaikan pada item description dan text scaling tidak dapat dilakukan, karena perbaikan yang perlu dilakukan adalah mengubah item description pada action bar dan bottom navbar, di mana item description pada kedua bagian tersebut pasti sama. Selain itu, text scaling disebabkan oleh fixed height yang merupakan bawaan dari action bar library navigation. 
 
