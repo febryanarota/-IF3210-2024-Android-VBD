@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         val serviceIntent = Intent(this, TokenValidationService::class.java)
         startService(serviceIntent)
-        registerReceiver(broadcastReceiver, IntentFilter("com.example.bondoman.ACTION_TOKEN_EXPIRED"), RECEIVER_EXPORTED)
+        registerReceiver(tokenReceiver, IntentFilter("com.example.bondoman.ACTION_TOKEN_EXPIRED"), RECEIVER_EXPORTED)
 
         TokenManager.init(this)
         val token = TokenManager.getToken()
@@ -110,10 +110,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private val broadcastReceiver = object : BroadcastReceiver() {
+    private val tokenReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action === "com.example.bondoman.ACTION_TOKEN_EXPIRED" && connected) {
                 TokenManager.removeToken()
+                Toast.makeText(applicationContext, "Session ended. Please login again", Toast.LENGTH_SHORT).show()
                 navigateToLogin(this@MainActivity)
             }
         }
@@ -148,7 +149,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(randomizeReceiver)
-        unregisterReceiver(broadcastReceiver)
+        unregisterReceiver(tokenReceiver)
         networkReceiver.disconnect()
     }
 }
