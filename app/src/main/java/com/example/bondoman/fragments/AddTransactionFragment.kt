@@ -22,6 +22,7 @@ import com.example.bondoman.viewmodels.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.Locale
 
 class AddTransactionFragment() : Fragment() {
@@ -119,9 +120,11 @@ class AddTransactionFragment() : Fragment() {
     }
 
     private fun onSaveButtonClicked(idData: String?) {
+        val format: NumberFormat = NumberFormat.getInstance(Locale("id", "ID"))
+
         val title = binding.transactionTitle.text.toString()
         val nominal = binding.transactionNominal.text.toString()
-        val nominalFloat = binding.transactionNominal.text.toString().toFloat()
+        val nominalFloat = format.parse(binding.transactionNominal.text.toString())?.toFloat() ?: 0F
         val category = binding.autoCompleteText.text.toString()
         val location = binding.transactionLocation.text.toString()
 
