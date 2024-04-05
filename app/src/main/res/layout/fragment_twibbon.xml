@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.TwibbonFragment">
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:foregroundGravity="bottom"
+        app:layout_constraintBottom_toTopOf="@+id/frameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="21dp">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/preview_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="21dp"/>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:contentDescription="@string/twibbon"
+            android:layout_gravity="bottom"
+            android:scaleType="fitEnd"
+            android:src="@drawable/twibbonpic" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <ImageButton
+            android:id="@+id/captureButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/transparent"
+
+            android:contentDescription="@string/capture_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+        <ImageButton
+            android:id="@+id/retakeButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/transparent"
+
+            android:contentDescription="@string/retake_image"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_retake"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/retakeButton"-->
+<!--            android:layout_width="74dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="44dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="@string/retake_image"-->
+<!--            android:scaleType="fitCenter"-->
+<!--            android:src="@drawable/button_retake"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.498"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_gravity="center"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />-->
+
+        <ImageButton
+            android:id="@+id/flipButton"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/flipImage"
+            android:src="@drawable/button_flip"
+            android:layout_gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.148"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            android:layout_marginLeft="40dp"
+            app:tint="?textFillColor" />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

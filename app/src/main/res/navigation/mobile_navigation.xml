@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_transaction">
+
+    <fragment
+        android:id="@+id/navigation_transaction"
+        android:name="com.example.bondoman.fragments.TransactionFragment"
+        android:label="@string/title_transaction"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_transaction_to_add_transaction"
+            app:destination="@id/add_transaction" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_twibbon"
+        android:name="com.example.bondoman.fragments.TwibbonFragment"
+        android:label="Twibbon"
+        tools:layout="@layout/fragment_twibbon" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_scan"
+        android:name="com.example.bondoman.fragments.ScanFragment"
+        android:label="@string/title_scan"
+        tools:layout="@layout/fragment_scan">
+        <action
+            android:id="@+id/action_navigation_scan_to_navigation_transaction"
+            app:destination="@+id/navigation_transaction" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.bondoman.fragments.SettingsFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_navigation_settings_to_add_transaction"
+            app:destination="@id/add_transaction" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_graph"
+        android:name="com.example.bondoman.fragments.GraphFragment"
+        android:label="@string/title_graph"
+        tools:layout="@layout/fragment_graph" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_transaction"
+        android:name="com.example.bondoman.fragments.AddTransactionFragment"
+        android:label="Add Transaction"
+        tools:layout="@layout/fragmet_add_transaction" >
+        <action
+            android:id="@+id/action_add_transaction_to_navigation_transaction"
+            app:destination="@id/navigation_transaction" />
+        <action
+            android:id="@+id/action_add_transaction_to_navigation_transaction2"
+            app:destination="@id/navigation_transaction" />
+    </fragment>
+</navigation>

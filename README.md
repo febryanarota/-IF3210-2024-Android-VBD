@@ -1,93 +1,150 @@
-# IF3210-2024-Android-VBD
+
+# BondoMan
+
+Aplikasi manajemen keuangan dengan kemampuan menyimpan dan menampilkan detail transaksi, melihat grafik rangkuman, melakukan scan nota, dan export ke spreadsheet.
+
+## Daftar Isi
+
+1. [Fitur](#fitur)
+2. [Library](#library)
+3. [Screenshots](#screenshots)
+4. [Analisis OWASP](#analisis-owasp)
+5. [Accessibility Testing](#accessibility-testing)
+4. [Pembagian Kerja](#pembagian-kerja)
+7. [Waktu Pengerjaan](#waktu-pengerjaan)
 
 
+## Fitur
 
-## Getting started
+- Menambah transaksi
+- Melihat daftar transaksi
+- Melihat detail transaksi (judul, tanggal, kategori, nominal, lokasi)
+- Scan nota
+- Mendapatkan lokasi secara otomatis
+- Melihat grafik rangkuman
+- Export data ke .xls dan .xlsx
+- Mengirim email dengan data export
+- Membuat transaksi random
+- Mengambil foto twibbon
+- Safe login dengan enkripsi token
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Library
+#### Others
+- Retrofit v2.9.0 \
+  Untuk membuat dan mengirim http request
+- Apache POI v4.0.0 \
+  Untuk membuat file export berbentuk spreadsheet
+- PhilJay/MpAndroidChart v3.1.0 \
+  Untuk membuat graf rangkuman transaksi
 
-## Add your files
+#### UI
+- Core KTX v1.12.0\
+  Ekstensi kotlin untuk AndroidX library
+- AppCompat v1.6.1
+- Material Component v1.11.0
+- ConstraintLayout v2.1.4, SwipeRefreshLayout v1.1.0
+- CoreSplashScreen v1.1.0
+- CameraX v1.3.2
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+#### Lifecycle
+- Room v2.6.1 \
+  Untuk menyambungkan dengan persistence layer
+- LifeData, ViewModel v2.7.0
+- Encrypted Shared Preferences v1.1.0-alpha06
 
-```
-cd existing_repo
-git remote add origin https://gitlab.informatika.org/if3120-2024-android-vbd/if3210-2024-android-vbd.git
-git branch -M main
-git push -uf origin main
-```
 
-## Integrate with your tools
+## Screenshots
+### Login
+![Login](screenshot/Screenshot_20240405_144928_BondoMan.jpg)
+### Daftar transaksi
+![Daftar transaksi](screenshot/Screenshot_20240405_145616_BondoMan.jpg)
+### Add/edit transaction
+![Add/edit transaction](screenshot/Screenshot_20240405_145924_BondoMan.jpg)
+### Scan nota (galeri)
+![Scan nota (galeri)](screenshot/Screenshot_20240405_145739_Media.jpg)
+### Scan result
+![Scan result](screenshot/Screenshot_20240405_145753_BondoMan.jpg)
+### Graf ringkasan (potrait)
+![Graf ringkasan (potrait)](screenshot/Screenshot_20240405_145800_BondoMan.jpg)
+### Graf ringkasan (landscape)
+![Graf ringkasan (landscape)](screenshot/Screenshot_20240405_145806_BondoMan.jpg)
+### Settings
+![Settings](screenshot/Screenshot_20240405_145815_BondoMan.jpg)
+### XLS format
+![XLS format](screenshot/Screenshot_20240405_145837_BondoMan.jpg)
+### Twibbon
+![Twibbon](screenshot/Screenshot_20240405_145655_BondoMan.jpg)
 
-- [ ] [Set up project integrations](https://gitlab.informatika.org/if3120-2024-android-vbd/if3210-2024-android-vbd/-/settings/integrations)
+## Analisis OWASP
+1. M4 - Insufficient Input/Output Validation \
+  Terdapat beberapa bagian aplikasi yang memerlukan validasi input/output, yaitu:
+    1. Login\
+      Field data Email dan Password merupakan bagian yang mungkin memerlukan akses ke db menggunakan sql. Meskipun kewajiban untuk serangan serupa ada di backend (misal dengan parameterized query), dari sisi frontend dapat dilakukan pencegahan seperti encode karakter quote(')
+    2. Add transaction\
+      Form add/edit transaksi memiliki user input yang akan diterjemahkan ke angka (Float). Terdapat masalah jika menggunakan formatter secara langsung, karena mungkin terpengaruh locale masing-masing smartphone. 
+      \
+      \
+      Masalah ini terasa pada edit form, terutama ketika format dari sistem mengikuti locale Indonesia (koma sebagai penanda desimal) namun smartphone mengikuti locale US (titik sebagai penanda desimal). Hal ini dapat membuat flow aplikasi terganggu.
+2. M8 - Security Misconfiguration\
+  Terdapat beberapa bagian aplikasi yang rentan terhadap security misconfiguration, yaitu:
+    1. Broadcast Receiver (Random)\
+      Fungsi randomize yang diterima dengan broadcast receiver seharusnya memiliki flag `Context.RECEIVER_NOT_EXPORTED`, karena hanya perlu diakses oleh fragment setting (yang terikat pada main activity).
+      \
+      \
+      Namun, ketika dilakukan pengujian, receiver tidak dapat menerima broadcast pada smartphone tertentu (terutama yang memiliki API Level 34). Untuk itu, perlu dilakukan pengubahan flag menjadi `Context.RECEIVER_EXPORTED` agar dapat digunakan di seluruh smartphone uji.
+      \
+      \
+      Hal tersebut tidak aman karena menyebabkan receiver dapat diakses dari aplikasi lain yang mungkin menambahkan transaksi yang tidak diinginkan. Untuk mengatasinya, kami mencari informasi tentang perubahan di android 14 dan menemukan [issue ini](https://issuetracker.google.com/issues/293487554?pli=1).
+      \
+      \
+      Mengacu pada issue di atas, flag dapat dikembalikan dan tetap berjalan di Android 14.
 
-## Collaborate with your team
+3. M9 - Insecure Data Storage\
+  Terdapat bagian aplikasi yang sangat memerlukan data storage aman, seperti:
+    1. Token manager\
+      Token yang didapat dari backend harus disimpan dengan aman. Untuk itu, kami menggunakan encrypted shared preferences agar token tersebut tidak tersimpan plaintext. Kunci yang digunakan adalah AES-256, yang cukup kuat untuk standar sekarang. 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Accessibility Testing
+Accessibility Testing dilakukan dengan menggunakan aplikasi Accessibility Scanner yang terdapat pada playstore. Dengan membuka aplikasi BondoMan dan menggunakan tools screen record pada accessibility scanner kemudian melakukan tour pada aplikasi, maka accessibility scanner akan mengusulkan beberapa perbaikan akan aksesibilitas. Berikut adalah beberapa suggestion sebelum dilakukan perbaikan aksesibilitas pada aplikasi. 
 
-## Test and Deploy
+![Item Label](screenshot/230133_0.jpg)
+![Touch Target](screenshot/230134_0.jpg)
+![Text Scaling](screenshot/230135_0.jpg)
+![Image Contrast](screenshot/230136_0.jpg)
+![Item Description](screenshot/230137_0.jpg)
+![Text Contrast](screenshot/230138_0.jpg)
 
-Use the built-in continuous integration in GitLab.
+Setelah dilakukan beberapa perbaikan, berikut adalah hasil akhir accessibility testing.
+![Hasil Perbaikan Accessibility Testing](screenshot/230305.jpg)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Beberapa perbaikan pada item description dan text scaling tidak dapat dilakukan, karena perbaikan yang perlu dilakukan adalah mengubah item description pada action bar dan bottom navbar, di mana item description pada kedua bagian tersebut pasti sama. Selain itu, text scaling disebabkan oleh fixed height yang merupakan bawaan dari action bar library navigation. 
 
-***
+## Pembagian Kerja
+- 13521120 Febryan Arota Hia
+    - xls export
+    - Email
+    - Login
+    - Token service
+    - Splash screen
+    - Twibbon
+- 13521137 Michael Utama
+    - Scan nota
+    - Location
+    - Network sensing
+    - OWASP
+- 13521156 Brigita Tri Carolina
+    - Navbar
+    - Add & edit transaction
+    - View transaction list
+    - Graf rangkuman
+    - Randomize
+    - Accessibility Testing
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Waktu pengerjaan
+- 13521120 Febryan Arota Hia\
+  10 jam persiapan, 40 jam pengerjaan
+- 13521137 Michael Utama\
+  10 jam persiapan, 35 jam pengerjaan
+- 13521156 Brigita Tri Carolina\
+  10 jam persiapan, 40 jam pengerjaan
