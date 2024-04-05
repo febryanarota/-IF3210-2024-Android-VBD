@@ -103,6 +103,7 @@ class SettingsFragment : Fragment() {
             intent.putExtra("title", "Randomize Transaction ${id}")
             intent.putExtra("nominal", nominal)
             intent.putExtra("category", category)
+            intent.setPackage(requireContext().packageName)
             requireActivity().sendBroadcast(intent)
         }
 
