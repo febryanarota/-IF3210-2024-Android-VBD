@@ -15,6 +15,7 @@
 
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/P1</item>
+        <item name="colorPrimaryVariant">@color/P2_DARK</item>
         <item name="colorAccent">@color/black</item>
         <item name="colorContainer">@color/black</item>
         <item name="textFillColor">@color/white</item>

@@ -13,7 +13,6 @@
         android:layout_marginEnd="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +30,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp">
 
                 <TextView
                     android:id="@+id/textView"
@@ -58,6 +58,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
                 android:text="@string/login_text" />
         </LinearLayout>
 
@@ -66,44 +67,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="0dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/emailEditTextLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:labelFor="@id/emailEditText"
-                android:text="Email"
-                android:textColor="?textFillColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/emailEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_margin="10dp"
+                android:hint="Email"
+                android:textColorHint="?textFillColor"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxBackgroundColor="?colorPrimaryVariant"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/P1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
-            <TextView
-                android:id="@+id/passwordEditTextLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:labelFor="@id/passwordEditText"
-                android:text="Password"
-                android:layout_marginTop="20dp"
-                android:textColor="?textFillColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/emailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="?textFillColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/passwordEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout_2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:layout_margin="10dp"
+                android:hint="Password"
+                android:textColorHint="?textFillColor"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxBackgroundColor="?colorPrimaryVariant"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/P1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
+
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="?textFillColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/message"

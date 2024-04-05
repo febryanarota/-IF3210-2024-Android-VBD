@@ -56,6 +56,12 @@ class AddTransactionFragment() : Fragment() {
 
         setUpArguments(idData, titleData, nominalData, categoryData, locationData)
 
+        Log.i("ADD TRANSACTION", "title: $titleData")
+        Log.i("ADD TRANSACTION", "nominal: $nominalData")
+        Log.i("ADD TRANSACTION", "nominalFloat: $nominalData")
+        Log.i("ADD TRANSACTION", "category: $categoryData")
+        Log.i("ADD TRANSACTION", "location: $locationData")
+
         binding.bttnSave.setOnClickListener {
             onSaveButtonClicked(idData)
         }
@@ -119,11 +125,25 @@ class AddTransactionFragment() : Fragment() {
     }
 
     private fun onSaveButtonClicked(idData: String?) {
+        Log.i("ADD TRANSACTION ON SAVE", "TES")
+
+        if (!dataNotNUll()) {
+            binding.errorMessage.text = "Fields cannot be empty!"
+            return
+        }
+
         val title = binding.transactionTitle.text.toString()
         val nominal = binding.transactionNominal.text.toString()
         val nominalFloat = binding.transactionNominal.text.toString().toFloat()
         val category = binding.autoCompleteText.text.toString()
         val location = binding.transactionLocation.text.toString()
+//        log all the atributte above
+        Log.i("ADD TRANSACTION ON SAVE", "nominal: $nominal")
+        Log.i("ADD TRANSACTION ON SAVE", "nominalFloat: $nominalFloat")
+        Log.i("ADD TRANSACTION ON SAVE", "category: $category")
+        Log.i("ADD TRANSACTION ON SAVE", "location: $location")
+
+
 
         if (isDataValid(title, nominal, category, location)) {
             if (idData != null && idData != "") {
@@ -136,6 +156,14 @@ class AddTransactionFragment() : Fragment() {
             findNavController().navigate(R.id.action_add_transaction_to_navigation_transaction)
         } else {
             binding.errorMessage.text = "Fields cannot be empty!"
+        }
+    }
+
+    private fun dataNotNUll(): Boolean {
+        if (binding.transactionTitle.text.toString().isNotBlank() && binding.transactionNominal.text.toString().isNotBlank() && binding.autoCompleteText.text.toString().isNotBlank() && binding.transactionLocation.text.toString().isNotBlank()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -23,85 +23,95 @@
             android:layout_marginEnd="0dp"
             android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/tvTransactionTitle"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout_judul_transaksi"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:labelFor="@id/transactionTitle"
-                android:text="Judul Transaksi"
-                android:textColor="?textFillColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:hint="Judul Transaksi"
+                android:textColorHint="?textFillColor"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxBackgroundColor="?colorPrimaryVariant"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/P1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
-            <EditText
-                android:id="@+id/transactionTitle"
+                <EditText
+                    android:id="@+id/transactionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="?textFillColor" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/outlined_text_input_layout_nominal"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text" />
-
-            <TextView
-                android:id="@+id/tvNominal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:hint="Nominal"
                 android:layout_marginTop="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:labelFor="@id/transactionNominal"
-                android:text="Nominal"
-                android:textColor="?textFillColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColorHint="?textFillColor"
+                android:theme="@style/TextInputLayoutStyle"
+                app:boxBackgroundColor="?colorPrimaryVariant"
+                app:boxBackgroundMode="filled"
+                app:boxStrokeColor="@color/P1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
-            <EditText
-                android:id="@+id/transactionNominal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="numberDecimal" />
+                <EditText
+                    android:id="@+id/transactionNominal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:textColor="?textFillColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
-                app:endIconTint="?textFillColor"
-                android:hint="@string/select">
+                android:hint="@string/select"
+                app:endIconTint="?textFillColor">
 
                 <AutoCompleteTextView
                     android:id="@+id/autoCompleteText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"/>
+                    app:endIconTint="?textFillColor"
+                    android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
-
-
-            <TextView
-                android:id="@+id/tvTransactionLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:labelFor="@id/transactionLocation"
-                android:text="Lokasi"
-                android:textColor="?textFillColor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="clip_vertical"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/transactionLocation"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/outlined_text_input_layout_lokasi"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:ems="10"
-                    android:inputType="text" />
+                    android:layout_weight="11"
+                    android:hint="Lokasi"
+                    android:textColorHint="?textFillColor"
+                    android:theme="@style/TextInputLayoutStyle"
+                    app:boxBackgroundColor="?colorPrimaryVariant"
+                    app:boxBackgroundMode="filled"
+                    app:boxStrokeColor="@color/P1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <EditText
+                        android:id="@+id/transactionLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="?textFillColor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
                     android:id="@+id/bttnSearchLoct"
@@ -113,6 +123,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/search_current_location_button"
                     app:icon="@drawable/location"
+                    app:iconGravity="textStart"
                     app:iconTint="?textFillColor" />
             </LinearLayout>
 
